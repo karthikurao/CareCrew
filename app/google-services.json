@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "323163308967",
+    "firebase_url": "https://care-crew-9f1bd-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "care-crew-9f1bd",
+    "storage_bucket": "care-crew-9f1bd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323163308967:android:7ff3218f159acafa35ec82",
+        "android_client_info": {
+          "package_name": "com.societal.carecrew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOrOWUSECU06r32eVr3WzRsbKZ509r-Xc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
