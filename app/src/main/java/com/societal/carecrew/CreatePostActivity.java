@@ -10,19 +10,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.societal.carecrew.databinding.ActivityCreatePostBinding;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -34,6 +40,7 @@ import okhttp3.Response;
 
 public class CreatePostActivity extends AppCompatActivity {
 
+    private static final int PICK_IMAGE_REQUEST = 1;
     private ActivityCreatePostBinding binding;
     private Uri imageUri;
     private ProgressDialog progressDialog;
@@ -41,8 +48,6 @@ public class CreatePostActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private DatabaseReference postsRef;
     private static final String IMG_BB_API_KEY = "fe3ec739386bdf08dec5cae269f7cb10"; // Replace with your actual API key
-    private ActivityResultLauncher<String> requestPermissionLauncher;
-    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +62,7 @@ public class CreatePostActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Uploading image...");
 
-        requestPermissionLauncher =
+        ActivityResultLauncher<String> requestPermissionLauncher =
                 registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                     if (isGranted) {
                         openImageChooser();
@@ -66,7 +71,7 @@ public class CreatePostActivity extends AppCompatActivity {
                     }
                 });
 
-        imagePickerLauncher =
+        ActivityResultLauncher<Intent> imagePickerLauncher =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                         result -> {
                             if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -78,7 +83,7 @@ public class CreatePostActivity extends AppCompatActivity {
                             }
                         });
 
-        binding.selectImageButton.setOnClickListener(v -> {
+        binding.selectImageButton.setOnClickListener(view -> {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES);
             } else {
@@ -86,10 +91,25 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-        binding.postButton.setOnClickListener(v -> {
+        binding.postButton.setOnClickListener(view -> {
             if (imageUri != null && !binding.captionEditText.getText().toString().isEmpty()) {
                 progressDialog.show();
-                uploadImageToImgBB();
+
+                // Generate a unique postId using push()
+                DatabaseReference newPostRef = postsRef.push();
+                String postId = newPostRef.getKey();
+
+                // Create a new Post object with the generated postId
+                String caption = binding.captionEditText.getText().toString().trim();
+                String username = currentUser.getDisplayName(); // Or fetch from database
+                Post newPost = new Post(currentUser.getUid(), username, caption, "", postId);
+
+                // Create empty nodes for likes and comments
+                Map<String, Object> initialData = new HashMap<>();
+                initialData.put("likes", new HashMap<>());
+                initialData.put("comments", new HashMap<>());
+
+                uploadImageToImgBB(newPost, newPostRef, initialData); // Pass initialData to uploadImageToImgBB
             } else {
                 Toast.makeText(this, "Please select an image and write a caption", Toast.LENGTH_SHORT).show();
             }
@@ -100,10 +120,10 @@ public class CreatePostActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        imagePickerLauncher.launch(intent);
+        startActivityForResult(intent, PICK_IMAGE_REQUEST);
     }
 
-    private void uploadImageToImgBB() {
+    private void uploadImageToImgBB(Post newPost, DatabaseReference newPostRef, Map<String, Object> initialData) {
         Bitmap bitmap = ((BitmapDrawable) binding.postImageView.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -138,7 +158,31 @@ public class CreatePostActivity extends AppCompatActivity {
                         String responseBody = response.body().string();
                         String imageUrl = parseImageUrlFromJsonResponse(responseBody);
                         if (imageUrl != null) {
-                            runOnUiThread(() -> createPost(imageUrl));
+                            runOnUiThread(() -> {
+                                // Update the imageUrl in the newPost object
+                                newPost.setImageUrl(imageUrl);
+
+                                // Save the updated post to the database
+                                newPostRef.setValue(newPost)
+                                        .addOnSuccessListener(aVoid -> {
+                                            // Set the initial data for likes and comments after the post is created
+                                            newPostRef.updateChildren(initialData)
+                                                    .addOnSuccessListener(aVoid1 -> {
+                                                        progressDialog.dismiss();
+                                                        Toast.makeText(CreatePostActivity.this, "Post created successfully", Toast.LENGTH_SHORT).show();
+                                                        finish();
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        progressDialog.dismiss();
+                                                        Toast.makeText(CreatePostActivity.this, "Failed to initialize likes and comments", Toast.LENGTH_SHORT).show();
+                                                        Log.e("CreatePostActivity", "Failed to initialize likes and comments: " + e.getMessage());
+                                                    });
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(CreatePostActivity.this, "Failed to create post", Toast.LENGTH_SHORT).show();
+                                        });
+                            });
                         } else {
                             runOnUiThread(() -> {
                                 progressDialog.dismiss();
@@ -174,19 +218,12 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
-    private void createPost(String imageUrl) {
-        String caption = Objects.requireNonNull(binding.captionEditText.getText()).toString();
-        String username = currentUser.getDisplayName(); // Or fetch from database
-        Post newPost = new Post(currentUser.getUid(), username, caption, imageUrl);
-        postsRef.push().setValue(newPost)
-                .addOnSuccessListener(unused -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, "Post created successfully", Toast.LENGTH_SHORT).show();
-                    finish(); // Finish the activity after successful post creation
-                })
-                .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(this, "Failed to create post", Toast.LENGTH_SHORT).show();
-                });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+            binding.postImageView.setImageURI(imageUri);
+        }
     }
 }

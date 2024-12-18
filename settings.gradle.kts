@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Care Crew"
 include(":app")
- 

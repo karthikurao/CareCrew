@@ -21,7 +21,20 @@ public class MapsActivity extends AppCompatActivity {
         // Add tabs to TabLayout
         binding.mapViewSwitch.addTab(binding.mapViewSwitch.newTab().setText("Map"));
         binding.mapViewSwitch.addTab(binding.mapViewSwitch.newTab().setText("List"));
-
+        binding.navView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                startActivity(new Intent(MapsActivity.this, HomePageActivity.class));
+            } else if (itemId == R.id.navigation_maps) {
+                // Already on MapsActivity, no action needed
+            } else if (itemId == R.id.navigation_groups) {
+                startActivity(new Intent(MapsActivity.this, GroupsActivity.class));
+            } else if (itemId == R.id.navigation_profile) {
+                startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
+            }
+            return true;
+        });
+        binding.navView.setSelectedItemId(R.id.navigation_maps);
         binding.mapViewSwitch.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

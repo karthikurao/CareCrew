@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "323163308967-35n4qu8pbd6ufl5cpvdp6b87g6paum9b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.societal.carecrew",
+            "certificate_hash": "547bd50e5b6d4a1dfb1e34bd06ff9891e5376ddc"
+          }
+        },
+        {
           "client_id": "323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com",
           "client_type": 3
         }

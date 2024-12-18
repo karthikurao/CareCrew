@@ -1,14 +1,14 @@
 package com.societal.carecrew;
 
 public class HelperClass {
-    String name,email,username,password,profileImageUrl;
+    String name,email,username,password,profileImageUrl,bio;
 
     public HelperClass(String name, String email, String username, String password) {
         this.name = name;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.profileImageUrl = ""; // Initialize with a default value or null
+        this.profileImageUrl = "";// Initialize with a default value or null
     }
 
     public String getPassword() {
@@ -45,6 +45,10 @@ public class HelperClass {
     public String getProfileImageUrl() { // Add this getter method
         return profileImageUrl;
     }
+    public String getBio() {
+        return bio;
+    }
+
 
 
     public HelperClass() {

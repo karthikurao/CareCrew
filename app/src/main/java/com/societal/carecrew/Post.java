@@ -6,17 +6,19 @@ public class Post {
     private String username;
     private String caption;
     private String imageUrl;
+    private String postId;
 
     public Post() {
         // You can initialize fields to default values here if needed
     }
 
     // Constructor
-    public Post(String uid, String username, String caption, String imageUrl) {
+    public Post(String uid, String username, String caption, String imageUrl, String postId) {
         this.uid = uid;
         this.username = username;
         this.caption = caption;
         this.imageUrl = imageUrl;
+        this.postId = postId;
     }
 
     // Getters
@@ -51,5 +53,8 @@ public class Post {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+    public String getPostId() {
+        return postId;
     }
 }

@@ -7,10 +7,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -25,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.societal.carecrew.databinding.ActivityLoginBinding;
 
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -63,16 +61,19 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user);
-                            } else {
-                                Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                    .addOnCompleteListener(this, task -> {
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                            // Save login status in SharedPreferences
+                            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                                    .putBoolean("is_logged_in", true)
+                                    .apply();
+
+                            updateUI(user);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Log.e("LoginActivity", "Authentication failed: " + Objects.requireNonNull(task.getException()).getMessage());
                         }
                     });
         });
@@ -109,16 +110,19 @@ public class LoginActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            Log.w("LoginActivity", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Firebase authentication failed", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = mAuth.getCurrentUser();
+
+                        // Save login status in SharedPreferences (for Google Sign-In)
+                        getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                                .putBoolean("is_logged_in", true)
+                                .apply();
+
+                        updateUI(user);
+                    } else {
+                        Log.w("LoginActivity", "signInWithCredential:failure", task.getException());
+                        Toast.makeText(LoginActivity.this, "Firebase authentication failed", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
