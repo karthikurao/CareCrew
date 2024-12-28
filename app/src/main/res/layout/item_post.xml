@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/postCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -21,7 +22,8 @@
             android:src="@drawable/default_profile_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/CircularImageView" />
+            app:shapeAppearanceOverlay="@style/CircularImageView"
+            android:contentDescription="@string/profile_image" />
 
         <TextView
             android:id="@+id/usernameTextView"
@@ -45,6 +47,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/profileImageView" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/likeAnimationView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/postImageView"
+            app:layout_constraintEnd_toEndOf="@id/postImageView"
+            app:layout_constraintStart_toStartOf="@id/postImageView"
+            app:layout_constraintTop_toTopOf="@id/postImageView"
+            app:lottie_autoPlay="false"
+            app:lottie_loop="false"
+            app:lottie_rawRes="@raw/like_animation" />
 
         <LinearLayout
             android:id="@+id/actionsLayout"

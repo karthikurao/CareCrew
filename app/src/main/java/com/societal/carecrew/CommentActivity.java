@@ -24,6 +24,7 @@ public class CommentActivity extends AppCompatActivity {
     private DatabaseReference commentsRef;
     private FirebaseUser currentUser;
     private String currentUsername;
+    private String currentProfileImageUrl = ""; // To store the current user's profile image URL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class CommentActivity extends AppCompatActivity {
             return;
         }
 
-        // Fetch the current username from the database
+        // Fetch the current username and profile image URL from the database
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -56,14 +57,14 @@ public class CommentActivity extends AppCompatActivity {
                     HelperClass user = snapshot.getValue(HelperClass.class);
                     if (user != null) {
                         currentUsername = user.getUsername();
+                        currentProfileImageUrl = user.getProfileImageUrl(); // Get the profile image URL
                     }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("CommentActivity", "Failed to fetch username: " + error.getMessage());
-                // Handle the error appropriately (e.g., use a default username or show a message)
+                Log.e("CommentActivity", "Failed to fetch user data: " + error.getMessage());
             }
         });
 
@@ -75,11 +76,11 @@ public class CommentActivity extends AppCompatActivity {
             }
 
             // Create a new comment object (updated)
-            String commentId = commentsRef.push().getKey(); // Generate a unique comment ID
-            Comment newComment = new Comment(commentId, currentUser.getUid(), currentUsername, commentText, ServerValue.TIMESTAMP);
+            String commentId = commentsRef.push().getKey();
+            Comment newComment = new Comment(commentId, currentUser.getUid(), currentUsername, commentText, ServerValue.TIMESTAMP, postId, currentProfileImageUrl); // Include profile image URL
 
             // Push the new comment to the database (updated)
-            commentsRef.child(commentId).setValue(newComment) // Use the commentId to create the child node
+            commentsRef.child(commentId).setValue(newComment)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(CommentActivity.this, "Comment added", Toast.LENGTH_SHORT).show();
                         binding.commentEditText.setText(""); // Clear the comment input field

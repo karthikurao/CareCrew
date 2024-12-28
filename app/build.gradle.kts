@@ -4,14 +4,14 @@ plugins {
 }
 android {
     namespace = "com.societal.carecrew"
-    compileSdk = 35
+    compileSdk = 34
     buildFeatures {
         viewBinding = true
     }
     defaultConfig {
         applicationId = "com.societal.carecrew"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.firebase.database)
     dependencies {
 // Core AndroidX libraries
-        implementation("androidx.core:core-ktx:1.15.0")
+        implementation("androidx.core:core-ktx:1.9.0")
 // UI libraries
         implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 // Firebase libraries
@@ -57,6 +57,8 @@ dependencies {
         androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // For UI testing
 // Maps SDK for Android
         implementation("com.google.android.gms:play-services-maps:18.1.0")
-// ... add any other dependencies you might need for your project
+
+        //animation dependency
+        implementation("com.airbnb.android:lottie:6.1.0")
     }
 }

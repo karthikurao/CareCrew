@@ -15,8 +15,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +30,8 @@ import com.societal.carecrew.databinding.ActivityProfileBinding;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,6 +50,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Uri imageUri;
     private ProgressDialog progressDialog;
     private boolean isBioEditing = false;
+    private List<Post> postList;
+    private PostAdapter postAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,30 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
                 binding.bioDoneButton.setVisibility(View.VISIBLE);
                 binding.bioEditIcon.setImageResource(R.drawable.ic_close); // Change icon to close
             }
-            isBioEditing = !isBioEditing; //
-            binding.bioDoneButton.setOnClickListener(u -> {
-                // 1. Get the new bio text
-                String newBio = binding.bioEditText.getText().toString();
-
-                // 2. Get the current user
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                // 3. Update the bio in Firebase Realtime Database
-                if (user != null) {
-                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(user.getUid());
-                    usersRef.child("bio").setValue(newBio)
-                            .addOnSuccessListener(aVoid -> {
-                                Toast.makeText(ProfileActivity.this, "Bio updated", Toast.LENGTH_SHORT).show();
-
-                                // 4. Disable editing and hide the done button
-                                binding.bioEditText.setEnabled(false);
-                                binding.bioDoneButton.setVisibility(View.GONE);
-                                binding.bioEditIcon.setImageResource(R.drawable.ic_edit);
-                                isBioEditing = false;
-                            })
-                            .addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed to update bio", Toast.LENGTH_SHORT).show());
-                }
-            });// Toggle the editing state
+            isBioEditing = !isBioEditing; // Toggle the editing state
         });
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -119,10 +102,89 @@ public class ProfileActivity extends AppCompatActivity {
                             binding.emailTextView.setText(helperClass.getEmail());
                             binding.bioEditText.setText(helperClass.getBio());
 
+                            // Load profile image using Glide
                             Glide.with(ProfileActivity.this)
                                     .load(helperClass.getProfileImageUrl())
                                     .placeholder(R.drawable.default_profile_image)
                                     .into(binding.profileImageView);
+
+                            // Load cover image using Glide
+                            Glide.with(ProfileActivity.this)
+                                    .load(helperClass.getCoverImageUrl())
+                                    .placeholder(R.drawable.default_cover_image)
+                                    .into(binding.coverImageView);
+
+                            // Set volunteer statistics
+                            binding.hoursVolunteeredTextView.setText(helperClass.getHoursVolunteered() + " hours");
+                            binding.opportunitiesParticipatedTextView.setText(helperClass.getOpportunitiesParticipated() + " opportunities");
+                            binding.groupsJoinedTextView.setText(helperClass.getGroupsJoined() + " groups");
+
+                            // Add skills to ChipGroup
+                            if (helperClass.getSkills() != null) {
+                                for (String skill : helperClass.getSkills()) {
+                                    Chip chip = new Chip(ProfileActivity.this);
+                                    chip.setText(skill);
+                                    binding.skillsChipGroup.addView(chip);
+                                }
+                            }
+
+                            // Add interests to ChipGroup
+                            if (helperClass.getInterests() != null) {
+                                for (String interest : helperClass.getInterests()) {
+                                    Chip chip = new Chip(ProfileActivity.this);
+                                    chip.setText(interest);
+                                    binding.interestsChipGroup.addView(chip);
+                                }
+                            }
+
+                            // Add availability to UI
+                            if (helperClass.getAvailability() != null) {
+                                binding.weekdaysTextView.setText("Weekdays: " + (helperClass.getAvailability().isWeekdays() ? "Available" : "Not Available"));
+                                binding.weekendsTextView.setText("Weekends: " + (helperClass.getAvailability().isWeekends() ? "Available" : "Not Available"));
+                                // ... and so on for other availability fields
+                            }
+
+                            // Add causes to UI
+                            if (helperClass.getCauses() != null) {
+                                for (String cause : helperClass.getCauses()) {
+                                    Chip chip = new Chip(ProfileActivity.this);
+                                    chip.setText(cause);
+                                    binding.causesChipGroup.addView(chip);
+                                }
+                            }
+
+                            // Add location to UI
+                            if (helperClass.getLocation() != null) {
+                                binding.locationTextView.setText(helperClass.getLocation());
+                            }
+
+                            // Add social links to UI (you might need to design this part based on your requirements)
+                            // Example:
+                            // Map<String, String> socialLinks = helperClass.getSocialLinks();
+                            // if (socialLinks != null) {
+                            //     for (Map.Entry<String, String> entry : socialLinks.entrySet()) {
+                            //         String platform = entry.getKey();
+                            //         String link = entry.getValue();
+                            //         // ... create a TextView or ImageView for the social link and add it to the layout ...
+                            //     }
+                            // }
+
+                            // Add aboutMe to UI
+                            if (helperClass.getAboutMe() != null) {
+                                binding.aboutMeTextView.setText(helperClass.getAboutMe());
+                            }
+
+                            // Add volunteer experience to UI
+                            if (helperClass.getVolunteerExperience() != null) {
+                                // Initialize RecyclerView for volunteer experience
+                                binding.volunteerExperienceRecyclerView.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
+                                VolunteerExperienceAdapter experienceAdapter = new VolunteerExperienceAdapter(helperClass.getVolunteerExperience());
+                                binding.volunteerExperienceRecyclerView.setAdapter(experienceAdapter);
+                            } else {
+                                // Handle the case where volunteerExperience is null
+                                Log.e("ProfileActivity", "volunteerExperience is null");
+                                // You might want to show a message or hide the RecyclerView
+                            }
                         }
                     }
                 }
@@ -132,35 +194,44 @@ public class ProfileActivity extends AppCompatActivity {
                     Toast.makeText(ProfileActivity.this, "Failed to fetch profile data", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            // Fetch and display user's posts
+            DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference("posts");
+            postsRef.orderByChild("uid").equalTo(user.getUid()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    postList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Post post = snapshot.getValue(Post.class);
+                        if (post != null) {
+                            postList.add(post);
+                        }
+                    }
+                    postAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(ProfileActivity.this, "Failed to fetch posts: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
+        // Initialize RecyclerView for posts
+        binding.postsRecyclerView.setLayoutManager(new LinearLayoutManager(ProfileActivity.this));
+        postList = new ArrayList<>();
+        postAdapter = new PostAdapter(postList, this);
+        binding.postsRecyclerView.setAdapter(postAdapter);
 
         binding.profileImageCard.setOnClickListener(v -> {
             // Get the URL of the current profile image
-            FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
-            if (user1 != null) {
-                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("users").child(user1.getUid());
-                usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            HelperClass helperClass = snapshot.getValue(HelperClass.class);
-                            if (helperClass != null) {
-                                String profileImageUrl = helperClass.getProfileImageUrl();
+            // (You'll need to implement the logic to get the profile image URL)
+            String profileImageUrl = ""; // Replace with the actual logic
 
-                                // Start FullScreenImageActivity and pass the image URL
-                                Intent intent = new Intent(ProfileActivity.this, FullScreenImageActivity.class);
-                                intent.putExtra("imageUrl", profileImageUrl);
-                                startActivity(intent);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(ProfileActivity.this, "Failed to fetch profile data", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+            // Start FullScreenImageActivity and pass the image URL
+            Intent intent = new Intent(ProfileActivity.this, FullScreenImageActivity.class);
+            intent.putExtra("imageUrl", profileImageUrl);
+            startActivity(intent);
         });
 
         binding.editProfileButton.setOnClickListener(v -> {
@@ -175,7 +246,7 @@ public class ProfileActivity extends AppCompatActivity {
                     .putBoolean("is_logged_in", false)
                     .apply();
 
-            // Start LoginActivity (or SignupActivity if that's your initial screen)
+            // Start LoginActivity
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
             startActivity(intent);
             finish(); // Finish ProfileActivity
