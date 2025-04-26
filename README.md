@@ -67,13 +67,6 @@ git clone https://github.com/yourusername/care-crew.git
 
 ---
 
-## 📸 Screenshots (Placeholder)
-
-| Splash Screen | Login Page | Signup Page | Home Page |
-|:-------------:|:----------:|:-----------:|:---------:|
-| (Add Here)    | (Add Here) | (Add Here)  | (Add Here) |
-
----
 
 ## 🛃️ Future Plans
 
