@@ -2,7 +2,6 @@
 package com.societal.carecrew;
 
 import android.content.Intent;
-import com.societal.carecrew.HomePageActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -11,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.card.MaterialCardView;
@@ -26,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
@@ -157,7 +153,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.captionTextView.setText(post.getCaption());
             Glide.with(holder.itemView.getContext()).load(post.getImageUrl()).into(holder.postImageView);
 
-            // Double-tap to like
+            // Double-tap to like (only on the postImageView)
             GestureDetector gestureDetector = new GestureDetector(holder.itemView.getContext(), new GestureDetector.SimpleOnGestureListener() {
                 @Override
                 public boolean onDoubleTap(MotionEvent e) {
@@ -196,30 +192,41 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
                     return true; // Consume the double-tap event
                 }
+            });
 
-                @Override
-                public boolean onSingleTapConfirmed(MotionEvent e) {
-                    // Single-tap to open PostThreadsActivity
+            holder.postImageView.setOnTouchListener((v, event) -> {
+                gestureDetector.onTouchEvent(event);
+                return true; // Consume the touch event on the ImageView
+            });
+
+            // Single-tap to open PostThreadsActivity (on the entire card EXCEPT the postImageView)
+            holder.postCardView.setOnClickListener(v -> {
+                // Get the coordinates of the touch event
+                float touchX = v.getX();
+                float touchY = v.getY();
+
+                // Get the coordinates of the postImageView
+                int[] imageLocation = new int[2];
+                holder.postImageView.getLocationOnScreen(imageLocation);
+                int imageX = imageLocation[0];
+                int imageY = imageLocation[1];
+                int imageWidth = holder.postImageView.getWidth();
+                int imageHeight = holder.postImageView.getHeight();
+
+                // Check if the touch event was outside the postImageView
+                if (touchX < imageX || touchX > imageX + imageWidth || touchY < imageY || touchY > imageY + imageHeight) {
                     Intent intent = new Intent(holder.itemView.getContext(), PostThreadsActivity.class);
                     intent.putExtra("postId", postId);
                     holder.itemView.getContext().startActivity(intent);
-                    return true; // Consume the single-tap event
                 }
             });
 
-            holder.postImageView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
-
-
         } catch (Exception e) {
             Log.e("PostAdapter", "Error in onBindViewHolder at position: " + position, e);
-
-            // Remove the faulty post from the list and update the adapter
             new Thread(() -> {
                 postList.remove(position);
-
                 // Get a reference to the HomePageActivity instance
                 AppCompatActivity activity = homePageActivity;
-
                 // Check if the activity is still valid before calling runOnUiThread
                 if (activity != null && !activity.isFinishing()) {
                     activity.runOnUiThread(() -> notifyItemRemoved(position));

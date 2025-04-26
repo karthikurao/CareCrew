@@ -3,6 +3,7 @@ package com.societal.carecrew;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,9 +36,8 @@ public class GroupsActivity extends AppCompatActivity {
         // Initialize RecyclerView
         binding.groupsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         groupList = new ArrayList<>();
-        groupAdapter = new GroupAdapter(groupList, this); // Pass the activity instance to the adapter
+        groupAdapter = new GroupAdapter(groupList, this);
         binding.groupsRecyclerView.setAdapter(groupAdapter);
-        groupAdapter.notifyDataSetChanged(); // Call on the 'groupAdapter' instance
 
         // Fetch groups from Firebase
         groupsRef = FirebaseDatabase.getInstance().getReference("groups");
@@ -45,7 +45,7 @@ public class GroupsActivity extends AppCompatActivity {
 
         // Handle create group button click
         binding.createGroupButton.setOnClickListener(v -> {
-            Intent intent = new Intent(GroupsActivity.this, CreateGroupActivity.class); // Replace with your CreateGroupActivity
+            Intent intent = new Intent(GroupsActivity.this, CreateGroupActivity.class);
             startActivity(intent);
         });
 
@@ -68,13 +68,11 @@ public class GroupsActivity extends AppCompatActivity {
         binding.navView.setSelectedItemId(R.id.navigation_groups);
     }
 
-    // Method to show group details (you'll need to implement this)
+    // Method to show group details
     public void showGroupDetails(Group group) {
-        // Implement logic to open GroupDetailActivity and pass the group data
-        // For example, using an Intent:
-        // Intent intent = new Intent(GroupsActivity.this, GroupDetailActivity.class);
-        // intent.putExtra("group", group);
-        // startActivity(intent);
+        Intent intent = new Intent(GroupsActivity.this, GroupDetailActivity.class);
+        intent.putExtra("groupId", group.getGroupId());
+        startActivity(intent);
     }
 
     private void fetchGroups() {
@@ -83,7 +81,7 @@ public class GroupsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 groupList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Group group = snapshot.getValue(Group.class); // Assuming you have a Group class
+                    Group group = snapshot.getValue(Group.class);
                     if (group != null) {
                         groupList.add(group);
                     }
@@ -94,6 +92,7 @@ public class GroupsActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(GroupsActivity.this, "Failed to fetch groups: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("GroupsActivity", "Failed to fetch groups: " + databaseError.getMessage());
             }
         });
     }

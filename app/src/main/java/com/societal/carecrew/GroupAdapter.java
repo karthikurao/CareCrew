@@ -1,14 +1,20 @@
 // GroupAdapter.java
 package com.societal.carecrew;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHolder> {
@@ -24,19 +30,40 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     @NonNull
     @Override
     public GroupViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group, parent, false); // Inflate your item_group layout
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group, parent, false);
         return new GroupViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull GroupViewHolder holder, int position) {
         Group group = groupList.get(position);
-        holder.groupNameTextView.setText(group.getName()); // Assuming your Group class has a getName() method
 
-        // Set other views in the holder based on your Group object
+        holder.groupNameTextView.setText(group.getName());
+
+        // Fetch the member count from Firebase
+        DatabaseReference groupMembersRef = FirebaseDatabase.getInstance().getReference("groups")
+                .child(group.getGroupId())
+                .child("members");
+
+        groupMembersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                long memberCount = snapshot.getChildrenCount();
+                holder.groupMembersCountTextView.setText(String.valueOf(memberCount));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("GroupAdapter", "Failed to get member count: " + error.getMessage());
+            }
+        });
+
+        Glide.with(holder.itemView.getContext())
+                .load(group.getGroupImageUrl())
+                .placeholder(R.drawable.ic_group)
+                .into(holder.groupImageView);
 
         holder.itemView.setOnClickListener(v -> {
-            // Call the showGroupDetails method in your GroupsActivity
             groupsActivity.showGroupDetails(group);
         });
     }
@@ -47,13 +74,17 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
     }
 
     public static class GroupViewHolder extends RecyclerView.ViewHolder {
+        ImageView groupImageView;
         TextView groupNameTextView;
-        // Add other views here as needed (e.g., ImageView for group image, etc.)
+        ImageView groupMembersCountImageView;
+        TextView groupMembersCountTextView;
 
         public GroupViewHolder(View itemView) {
             super(itemView);
-
-            // Initialize other views here
+            groupImageView = itemView.findViewById(R.id.groupImageView);
+            groupNameTextView = itemView.findViewById(R.id.groupNameTextView);
+            groupMembersCountImageView = itemView.findViewById(R.id.groupMembersCountImageView);
+            groupMembersCountTextView = itemView.findViewById(R.id.groupMembersCountTextView);
         }
     }
 }

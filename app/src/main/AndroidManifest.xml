@@ -16,6 +16,9 @@
         android:theme="@style/Theme.CareCrew"
         tools:targetApi="31">
         <activity
+            android:name=".GroupDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".PostThreadsActivity"
             android:exported="false" />
         <activity
