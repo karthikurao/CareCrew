@@ -124,8 +124,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
 
 ## 📬 Contact
 
-- GitHub: [yourusername](https://github.com/yourusername)
-- Email: your-email@example.com
 
 Feel free to reach out for any queries, collaborations, or suggestions! 🚀
 
