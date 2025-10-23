@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme colors -->
+    <color name="black">#FFFFFFFF</color>
+    <color name="white">#FF000000</color>
+    <color name="blue">#8B7EF7</color>
+    <color name="lavender">#2C2744</color>
+    <color name="grey">#B0B0B0</color>
+    <color name="light_grey">#3C3C3C</color>
+</resources>
