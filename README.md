@@ -85,6 +85,7 @@ git clone https://github.com/yourusername/care-crew.git
 
 - **[Firebase Setup Guide](FIREBASE_SETUP.md)** - Complete guide to setting up Firebase Realtime Database
 - **[Database Structure](DATABASE_STRUCTURE.md)** - Detailed database schema and design decisions
+- **[Database Schema Diagram](DATABASE_SCHEMA_DIAGRAM.md)** - Visual diagrams of database structure and relationships
 - **[Database Quick Reference](DATABASE_QUICK_REFERENCE.md)** - Code snippets and common operations for developers
 
 ---
