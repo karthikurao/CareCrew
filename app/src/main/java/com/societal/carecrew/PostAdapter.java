@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,7 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     .child(postId)
                     .child("comments");
 
-            postLikesRef.addValueEventListener(new ValueEventListener() {
+            postLikesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     long numLikes = snapshot.getChildrenCount();
@@ -78,7 +80,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 }
             });
 
-            postCommentsRef.addValueEventListener(new ValueEventListener() {
+            postCommentsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     long numComments = snapshot.getChildrenCount();
@@ -138,7 +140,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
                             Glide.with(holder.itemView.getContext())
                                     .load(user.getProfileImageUrl())
-                                    .placeholder(R.drawable.default_profile_image)
+                                    .apply(new RequestOptions()
+                                            .placeholder(R.drawable.default_profile_image)
+                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                            .override(200, 200))
                                     .into(holder.profileImageView);
                         }
                     }
@@ -151,7 +156,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             });
 
             holder.captionTextView.setText(post.getCaption());
-            Glide.with(holder.itemView.getContext()).load(post.getImageUrl()).into(holder.postImageView);
+            Glide.with(holder.itemView.getContext())
+                    .load(post.getImageUrl())
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .override(1080, 1080))
+                    .into(holder.postImageView);
 
             // Double-tap to like (only on the postImageView)
             GestureDetector gestureDetector = new GestureDetector(holder.itemView.getContext(), new GestureDetector.SimpleOnGestureListener() {

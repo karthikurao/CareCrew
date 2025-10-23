@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -105,13 +107,19 @@ public class ProfileActivity extends AppCompatActivity {
                             // Load profile image using Glide
                             Glide.with(ProfileActivity.this)
                                     .load(helperClass.getProfileImageUrl())
-                                    .placeholder(R.drawable.default_profile_image)
+                                    .apply(new RequestOptions()
+                                            .placeholder(R.drawable.default_profile_image)
+                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                            .override(400, 400))
                                     .into(binding.profileImageView);
 
                             // Load cover image using Glide
                             Glide.with(ProfileActivity.this)
                                     .load(helperClass.getCoverImageUrl())
-                                    .placeholder(R.drawable.default_cover_image)
+                                    .apply(new RequestOptions()
+                                            .placeholder(R.drawable.default_cover_image)
+                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                            .override(1080, 400))
                                     .into(binding.coverImageView);
 
                             // Set volunteer statistics
@@ -197,7 +205,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             // Fetch and display user's posts
             DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference("posts");
-            postsRef.orderByChild("uid").equalTo(user.getUid()).addValueEventListener(new ValueEventListener() {
+            postsRef.orderByChild("uid").equalTo(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     postList.clear();
@@ -382,7 +390,10 @@ public class ProfileActivity extends AppCompatActivity {
     private void loadProfileImage(String imageUrl) {
         Glide.with(this)
                 .load(imageUrl)
-                .placeholder(R.drawable.default_profile_image)
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.default_profile_image)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .override(400, 400))
                 .into(binding.profileImageView);
     }
 }

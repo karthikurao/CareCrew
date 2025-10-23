@@ -80,7 +80,7 @@ public class HomePageActivity extends AppCompatActivity {
 
     private void fetchPosts() {
         postsRef = FirebaseDatabase.getInstance().getReference("posts");
-        postsRef.addValueEventListener(new ValueEventListener() {
+        postsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 postList.clear();

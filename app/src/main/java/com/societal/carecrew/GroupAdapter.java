@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +47,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
                 .child(group.getGroupId())
                 .child("members");
 
-        groupMembersRef.addValueEventListener(new ValueEventListener() {
+        groupMembersRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 long memberCount = snapshot.getChildrenCount();
@@ -60,7 +62,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
         Glide.with(holder.itemView.getContext())
                 .load(group.getGroupImageUrl())
-                .placeholder(R.drawable.ic_group)
+                .apply(new RequestOptions()
+                        .placeholder(R.drawable.ic_group)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .override(300, 300))
                 .into(holder.groupImageView);
 
         holder.itemView.setOnClickListener(v -> {

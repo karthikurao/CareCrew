@@ -76,7 +76,7 @@ public class GroupsActivity extends AppCompatActivity {
     }
 
     private void fetchGroups() {
-        groupsRef.addValueEventListener(new ValueEventListener() {
+        groupsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 groupList.clear();
