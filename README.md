@@ -51,7 +51,13 @@ git clone https://github.com/yourusername/care-crew.git
 - Download the `google-services.json` file.
 - Place it inside the `/app` directory.
 
-### 4. Build and Run
+### 4. Google Maps API Setup
+
+- Follow the detailed instructions in [MAPS_SETUP.md](MAPS_SETUP.md) to configure Google Maps API.
+- Obtain a Google Maps API key from Google Cloud Console.
+- Add your API key to `app/src/main/res/values/strings.xml`.
+
+### 5. Build and Run
 
 - Connect your emulator or real device.
 - Hit the **Run** ▶️ button in Android Studio.
