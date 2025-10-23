@@ -70,7 +70,7 @@ public class GroupsActivity extends AppCompatActivity {
 
     // Method to show group details
     public void showGroupDetails(Group group) {
-        Intent intent = new Intent(GroupsActivity.this, GroupDetailActivity.class);
+        Intent intent = new Intent(GroupsActivity.this, GroupDetailsActivity.class);
         intent.putExtra("groupId", group.getGroupId());
         startActivity(intent);
     }
