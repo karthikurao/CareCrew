@@ -53,8 +53,10 @@ dependencies {
         annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
 // Other dependencies
         testImplementation("junit:junit:4.13.2") // For unit testing
+        testImplementation("org.robolectric:robolectric:4.11.1") // For Android unit testing
         androidTestImplementation("androidx.test.ext:junit:1.1.5") // For instrumentation testing
         androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // For UI testing
+        androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1") // For intent testing
 // Maps SDK for Android
         implementation("com.google.android.gms:play-services-maps:18.1.0")
 
