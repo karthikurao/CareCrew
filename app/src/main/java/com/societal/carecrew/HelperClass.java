@@ -23,6 +23,7 @@ public class HelperClass {
     private String aboutMe;
     private List<VolunteerExperience> volunteerExperience;
     private Map<String, String> socialLinks; // Added for social links
+    private Boolean isAdmin; // Added for admin access
 
     // Constructor
     public HelperClass(String name, String email, String username, String password) {
@@ -38,6 +39,7 @@ public class HelperClass {
         this.groupsJoined = 0;
         this.location = "";
         this.aboutMe = "";
+        this.isAdmin = false;
         // ... initialize other fields as needed
     }
 
@@ -185,6 +187,14 @@ public class HelperClass {
 
     public void setSocialLinks(Map<String, String> socialLinks) {
         this.socialLinks = socialLinks;
+    }
+
+    public Boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
     }
 
     // No-argument constructor for Firebase

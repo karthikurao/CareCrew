@@ -32,5 +32,13 @@
     <string name="profile_image">Profile Image</string>
     <string name="opportunities">Opportunities</string>
     <string name="default_web_client_id">323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com</string>
+    <string name="admin_dashboard">Admin Dashboard</string>
+    <string name="analytics_overview">Analytics Overview</string>
+    <string name="total_users">Total Users</string>
+    <string name="total_events">Total Events</string>
+    <string name="total_groups">Total Groups</string>
+    <string name="total_posts">Total Posts</string>
+    <string name="event_management">Event Management</string>
+    <string name="no_events_found">No events found</string>
 
 </resources>

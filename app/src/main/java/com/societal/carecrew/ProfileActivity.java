@@ -185,6 +185,12 @@ public class ProfileActivity extends AppCompatActivity {
                                 Log.e("ProfileActivity", "volunteerExperience is null");
                                 // You might want to show a message or hide the RecyclerView
                             }
+
+                            // Check if user is admin and show admin dashboard button
+                            Boolean isAdmin = helperClass.getIsAdmin();
+                            if (isAdmin != null && isAdmin) {
+                                binding.adminDashboardButton.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 }
@@ -237,6 +243,12 @@ public class ProfileActivity extends AppCompatActivity {
         binding.editProfileButton.setOnClickListener(v -> {
             // Start EditProfileActivity
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        binding.adminDashboardButton.setOnClickListener(v -> {
+            // Start AdminDashboardActivity
+            Intent intent = new Intent(ProfileActivity.this, AdminDashboardActivity.class);
             startActivity(intent);
         });
 
