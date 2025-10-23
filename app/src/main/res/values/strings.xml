@@ -32,5 +32,6 @@
     <string name="profile_image">Profile Image</string>
     <string name="opportunities">Opportunities</string>
     <string name="default_web_client_id">323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com</string>
+    <string name="google_maps_key">YOUR_GOOGLE_MAPS_API_KEY</string>
 
 </resources>

@@ -23,6 +23,8 @@ public class HelperClass {
     private String aboutMe;
     private List<VolunteerExperience> volunteerExperience;
     private Map<String, String> socialLinks; // Added for social links
+    private double latitude;
+    private double longitude;
 
     // Constructor
     public HelperClass(String name, String email, String username, String password) {
@@ -185,6 +187,22 @@ public class HelperClass {
 
     public void setSocialLinks(Map<String, String> socialLinks) {
         this.socialLinks = socialLinks;
+    }
+    
+    public double getLatitude() {
+        return latitude;
+    }
+    
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+    
+    public double getLongitude() {
+        return longitude;
+    }
+    
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     // No-argument constructor for Firebase
