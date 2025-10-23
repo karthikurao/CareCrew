@@ -79,20 +79,31 @@ public class SignupActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             if (user != null) {
-                                HelperClass helperClass = new HelperClass(name, email, username, password);
+                                // Don't store password in database - security best practice
+                                HelperClass helperClass = new HelperClass(name, email, username, "");
                                 reference.child(user.getUid()).setValue(helperClass)
                                         .addOnSuccessListener(aVoid -> {
+                                            // Save login status in SharedPreferences
+                                            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                                                    .putBoolean("is_logged_in", true)
+                                                    .apply();
+
                                             Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
                                             startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
                                             finish();
                                         })
                                         .addOnFailureListener(e -> {
                                             Toast.makeText(SignupActivity.this, "Failed to save user data", Toast.LENGTH_SHORT).show();
-                                            // Consider deleting the user from Firebase Authentication here
+                                            // Delete the user from Firebase Authentication if database save fails
+                                            user.delete();
                                         });
                             }
                         } else {
-                            Toast.makeText(SignupActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            String errorMessage = "Authentication failed.";
+                            if (task.getException() != null) {
+                                errorMessage = task.getException().getMessage();
+                            }
+                            Toast.makeText(SignupActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                         }
                     });
         });
@@ -152,6 +163,11 @@ public class SignupActivity extends AppCompatActivity {
 
             HelperClass helperClass = new HelperClass(name, user.getEmail(), username, ""); // Don't store password here
             reference.child(user.getUid()).setValue(helperClass);
+
+            // Save login status in SharedPreferences
+            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                    .putBoolean("is_logged_in", true)
+                    .apply();
 
             Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
