@@ -17,6 +17,11 @@
         android:title="@string/groups" />
 
     <item
+        android:id="@+id/navigation_leaderboard"
+        android:icon="@drawable/ic_leaderboard"
+        android:title="@string/leaderboard" />
+
+    <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_person"
         android:title="@string/profile" />

@@ -29,6 +29,8 @@ public class MapsActivity extends AppCompatActivity {
                 // Already on MapsActivity, no action needed
             } else if (itemId == R.id.navigation_groups) {
                 startActivity(new Intent(MapsActivity.this, GroupsActivity.class));
+            } else if (itemId == R.id.navigation_leaderboard) {
+                startActivity(new Intent(MapsActivity.this, LeaderboardActivity.class));
             } else if (itemId == R.id.navigation_profile) {
                 startActivity(new Intent(MapsActivity.this, ProfileActivity.class));
             }

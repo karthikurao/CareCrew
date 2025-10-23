@@ -261,6 +261,8 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(ProfileActivity.this, MapsActivity.class));
             } else if (itemId == R.id.navigation_groups) {
                 startActivity(new Intent(ProfileActivity.this, GroupsActivity.class));
+            } else if (itemId == R.id.navigation_leaderboard) {
+                startActivity(new Intent(ProfileActivity.this, LeaderboardActivity.class));
             } else if (itemId == R.id.navigation_profile) {
                 // Already on ProfileActivity, no action needed
             }
