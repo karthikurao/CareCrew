@@ -11,12 +11,22 @@ public class Opportunity implements Parcelable {
     private String date;
     private String location;
     private String category;
+    private boolean isUrgent;
 
     public Opportunity(String title, String description, String date, String location) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.location = location;
+        this.isUrgent = false;
+    }
+
+    public Opportunity(String title, String description, String date, String location, boolean isUrgent) {
+        this.title = title;
+        this.description = description;
+        this.date = date;
+        this.location = location;
+        this.isUrgent = isUrgent;
     }
 
     protected Opportunity(Parcel in) {
@@ -24,6 +34,7 @@ public class Opportunity implements Parcelable {
         description = in.readString();
         date = in.readString();
         location = in.readString();
+        isUrgent = in.readByte() != 0;
     }
 
     public static final Creator<Opportunity> CREATOR = new Creator<Opportunity>() {
@@ -66,8 +77,17 @@ public class Opportunity implements Parcelable {
         dest.writeString(description);
         dest.writeString(date);
         dest.writeString(location);
+        dest.writeByte((byte) (isUrgent ? 1 : 0));
     }
     public String getCategory() { // Add this getter method
         return category;
+    }
+
+    public boolean isUrgent() {
+        return isUrgent;
+    }
+
+    public void setUrgent(boolean urgent) {
+        isUrgent = urgent;
     }
 }

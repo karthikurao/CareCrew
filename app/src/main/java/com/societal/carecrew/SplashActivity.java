@@ -13,6 +13,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        // Initialize notification channels
+        NotificationHelper.createNotificationChannels(this);
+
         new Handler().postDelayed(() -> {
             boolean isLoggedIn = getSharedPreferences("app_prefs", MODE_PRIVATE)
                     .getBoolean("is_logged_in", false);
