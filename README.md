@@ -67,6 +67,20 @@ git clone https://github.com/yourusername/care-crew.git
 
 ---
 
+## 📲 Push Notifications
+
+Care Crew includes Firebase Cloud Messaging (FCM) integration for real-time alerts about urgent volunteer needs.
+
+**Key Features:**
+- Automatic subscription to urgent notifications on login
+- Topic-based messaging for scalable broadcasting
+- Support for high-priority urgent notifications
+- Notification channels for Android 8.0+
+
+For detailed setup and usage instructions, see [Push Notifications Guide](docs/PUSH_NOTIFICATIONS.md).
+
+---
+
 
 ## 🛃️ Future Plans
 
