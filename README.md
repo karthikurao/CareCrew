@@ -19,6 +19,7 @@ The app simplifies the process of signing up, finding local volunteer opportunit
 - 💬 **In-App Chat**: Communication between volunteers.
 - 🏆 **Leaderboards**: Recognizing top contributors.
 - 👥 **Volunteer Groups**: Create and manage local volunteer teams.
+- 📊 **Admin Dashboard**: Manage events and view analytics (admin users only).
 - 📲 **Notifications**: (Coming Soon) Alerts for urgent help opportunities.
 
 ---
@@ -74,8 +75,26 @@ git clone https://github.com/yourusername/care-crew.git
 - 🌑 Dark Mode for better night usability.
 - 📸 Profile picture uploads.
 - 🫩 Event creation features.
-- 📊 Admin Analytics Dashboard.
+- ✅ ~~📊 Admin Analytics Dashboard~~ (Completed!)
 - 🔒 Two-Factor Authentication (2FA) for extra security.
+
+---
+
+## 📊 Admin Dashboard
+
+The Admin Dashboard feature is now available! Administrators can:
+
+- **View Analytics**: Total counts for users, events, groups, and posts
+- **Manage Events**: View and delete events/opportunities
+- **Real-time Updates**: All data syncs live with Firebase
+
+**Getting Started with Admin Dashboard**:
+1. See [ADMIN_DASHBOARD_QUICKSTART.md](ADMIN_DASHBOARD_QUICKSTART.md) for setup instructions
+2. Review [ADMIN_DASHBOARD_DOCUMENTATION.md](ADMIN_DASHBOARD_DOCUMENTATION.md) for detailed features
+3. Check [ADMIN_DASHBOARD_ARCHITECTURE.md](ADMIN_DASHBOARD_ARCHITECTURE.md) for technical details
+4. Read [SECURITY_REVIEW.md](SECURITY_REVIEW.md) for security considerations
+
+**Note**: Admin access must be granted via Firebase Console by setting `isAdmin: true` for specific users.
 
 ---
 
