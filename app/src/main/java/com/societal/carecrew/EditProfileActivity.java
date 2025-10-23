@@ -155,18 +155,6 @@ public class EditProfileActivity extends AppCompatActivity {
             // If password not being updated
             updateDatabase(newName, newEmail, newBio);
         }
-        usersRef.child("name").setValue(newName);
-        usersRef.child("email").setValue(newEmail);
-        usersRef.child("bio").setValue(newBio)
-                .addOnSuccessListener(aVoid -> { // Make sure this line is correct
-                    progressDialog.dismiss();
-                    Toast.makeText(EditProfileActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    progressDialog.dismiss();
-                    Toast.makeText(EditProfileActivity.this, "Failed to update profile", Toast.LENGTH_SHORT).show();
-                });
     }
 
     private void updateDatabase(String newName, String newEmail, String newBio) {
