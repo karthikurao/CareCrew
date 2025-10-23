@@ -119,6 +119,10 @@ public class GroupDetailsActivity extends AppCompatActivity {
                         // Update button visibility and text
                         updateUI();
                     }
+                } else {
+                    // Group has been deleted
+                    Toast.makeText(GroupDetailsActivity.this, "This group no longer exists", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
             }
 
@@ -132,6 +136,7 @@ public class GroupDetailsActivity extends AppCompatActivity {
 
     private void loadMembers(DataSnapshot groupSnapshot) {
         memberIds.clear();
+        isMember = false; // Reset membership status
         
         DataSnapshot membersSnapshot = groupSnapshot.child("members");
         if (membersSnapshot.exists()) {
