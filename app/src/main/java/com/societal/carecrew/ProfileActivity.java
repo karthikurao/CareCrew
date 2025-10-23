@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,12 +55,20 @@ public class ProfileActivity extends AppCompatActivity {
     private boolean isBioEditing = false;
     private List<Post> postList;
     private PostAdapter postAdapter;
+    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Initialize Google Sign-In client
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         // Initially disable editing and hide the done button
         binding.bioEditText.setEnabled(false);
@@ -241,15 +252,22 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         binding.logoutButton.setOnClickListener(v -> {
+            // Sign out from Firebase
             FirebaseAuth.getInstance().signOut();
-            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
-                    .putBoolean("is_logged_in", false)
-                    .apply();
 
-            // Start LoginActivity
-            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish(); // Finish ProfileActivity
+            // Sign out from Google
+            mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+                // Clear SharedPreferences
+                getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
+                        .putBoolean("is_logged_in", false)
+                        .apply();
+
+                // Start LoginActivity
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            });
         });
 
         // Set up BottomNavigationView
