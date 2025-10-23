@@ -75,6 +75,8 @@ public class HomePageActivity extends AppCompatActivity {
                 startActivity(new Intent(HomePageActivity.this, MapsActivity.class));
             } else if (item.getItemId() == R.id.navigation_groups) {
                 startActivity(new Intent(HomePageActivity.this, GroupsActivity.class));
+            } else if (item.getItemId() == R.id.navigation_chat) {
+                startActivity(new Intent(HomePageActivity.this, ChatListActivity.class));
             } else if (item.getItemId() == R.id.navigation_profile) {
                 startActivity(new Intent(HomePageActivity.this, ProfileActivity.class));
             }

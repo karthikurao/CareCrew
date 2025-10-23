@@ -58,6 +58,8 @@ public class GroupsActivity extends AppCompatActivity {
                 startActivity(new Intent(GroupsActivity.this, MapsActivity.class));
             } else if (itemId == R.id.navigation_groups) {
                 // Already on GroupsActivity, no action needed
+            } else if (itemId == R.id.navigation_chat) {
+                startActivity(new Intent(GroupsActivity.this, ChatListActivity.class));
             } else if (itemId == R.id.navigation_profile) {
                 startActivity(new Intent(GroupsActivity.this, ProfileActivity.class));
             }
