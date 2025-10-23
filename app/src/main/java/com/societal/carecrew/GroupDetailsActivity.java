@@ -154,8 +154,15 @@ public class GroupDetailsActivity extends AppCompatActivity {
     private void updateUI() {
         // Update join/leave button
         if (isMember) {
-            binding.joinLeaveButton.setText("Leave Group");
+            // If user is the creator, hide the leave button
+            if (currentUserId != null && currentUserId.equals(creatorId)) {
+                binding.joinLeaveButton.setVisibility(View.GONE);
+            } else {
+                binding.joinLeaveButton.setVisibility(View.VISIBLE);
+                binding.joinLeaveButton.setText("Leave Group");
+            }
         } else {
+            binding.joinLeaveButton.setVisibility(View.VISIBLE);
             binding.joinLeaveButton.setText("Join Group");
         }
 
@@ -170,6 +177,12 @@ public class GroupDetailsActivity extends AppCompatActivity {
     private void handleJoinLeave() {
         if (currentUserId == null) {
             Toast.makeText(this, "Please log in to join groups", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Prevent creator from leaving their own group
+        if (isMember && currentUserId.equals(creatorId)) {
+            Toast.makeText(this, "Group creator cannot leave the group", Toast.LENGTH_SHORT).show();
             return;
         }
 
