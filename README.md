@@ -19,6 +19,7 @@ The app simplifies the process of signing up, finding local volunteer opportunit
 - 💬 **In-App Chat**: Communication between volunteers.
 - 🏆 **Leaderboards**: Recognizing top contributors.
 - 👥 **Volunteer Groups**: Create and manage local volunteer teams.
+- 🌑 **Dark Mode**: Toggle between light and dark themes from your profile.
 - 📲 **Notifications**: (Coming Soon) Alerts for urgent help opportunities.
 
 ---
@@ -71,7 +72,6 @@ git clone https://github.com/yourusername/care-crew.git
 ## 🛃️ Future Plans
 
 - 🔔 Push Notifications for emergency events.
-- 🌑 Dark Mode for better night usability.
 - 📸 Profile picture uploads.
 - 🫩 Event creation features.
 - 📊 Admin Analytics Dashboard.
