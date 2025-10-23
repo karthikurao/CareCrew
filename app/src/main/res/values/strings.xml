@@ -26,6 +26,7 @@
     <string name="home">Home</string>
     <string name="maps">Maps</string>
     <string name="groups">Groups</string>
+    <string name="chat">Chat</string>
     <string name="create_post">Post</string>
     <string name="selected_image">Selected Image</string>
     <string name="title_activity_map_view_fragment">MapViewFragment</string>
