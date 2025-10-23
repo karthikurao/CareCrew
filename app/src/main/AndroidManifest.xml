@@ -19,6 +19,18 @@
             android:name=".GroupDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".GroupDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".NewChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".PostThreadsActivity"
             android:exported="false" />
         <activity
