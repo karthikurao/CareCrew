@@ -50,6 +50,8 @@ git clone https://github.com/yourusername/care-crew.git
 - Enable **Email/Password Authentication** and **Realtime Database**.
 - Download the `google-services.json` file.
 - Place it inside the `/app` directory.
+- **Configure the database**: Follow the detailed setup guide in [FIREBASE_SETUP.md](FIREBASE_SETUP.md)
+- **Database structure**: Review the database schema in [DATABASE_STRUCTURE.md](DATABASE_STRUCTURE.md)
 
 ### 4. Build and Run
 
@@ -76,6 +78,14 @@ git clone https://github.com/yourusername/care-crew.git
 - 🫩 Event creation features.
 - 📊 Admin Analytics Dashboard.
 - 🔒 Two-Factor Authentication (2FA) for extra security.
+
+---
+
+## 📚 Documentation
+
+- **[Firebase Setup Guide](FIREBASE_SETUP.md)** - Complete guide to setting up Firebase Realtime Database
+- **[Database Structure](DATABASE_STRUCTURE.md)** - Detailed database schema and design decisions
+- **[Database Quick Reference](DATABASE_QUICK_REFERENCE.md)** - Code snippets and common operations for developers
 
 ---
 

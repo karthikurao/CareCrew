@@ -1,0 +1,415 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    
+    "users": {
+      "$userId": {
+        ".read": true,
+        ".write": "$userId === auth.uid",
+        ".validate": "newData.hasChildren(['name', 'email', 'username'])",
+        
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        },
+        "email": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$/i)"
+        },
+        "username": {
+          ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 30"
+        },
+        "bio": {
+          ".validate": "newData.isString() && newData.val().length <= 500"
+        },
+        "aboutMe": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "location": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        },
+        "hoursVolunteered": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "opportunitiesParticipated": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "groupsJoined": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "skills": {
+          ".validate": "newData.hasChildren()"
+        },
+        "interests": {
+          ".validate": "newData.hasChildren()"
+        },
+        "causes": {
+          ".validate": "newData.hasChildren()"
+        },
+        "profileImageUrl": {
+          ".validate": "newData.isString()"
+        },
+        "coverImageUrl": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+    
+    "groups": {
+      ".read": true,
+      "$groupId": {
+        ".write": "!data.exists() || data.child('createdBy').val() === auth.uid || data.child('members').child(auth.uid).exists()",
+        ".validate": "newData.hasChildren(['groupId', 'name', 'description', 'createdBy'])",
+        
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100"
+        },
+        "description": {
+          ".validate": "newData.isString() && newData.val().length <= 1000"
+        },
+        "createdBy": {
+          ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())"
+        },
+        "groupId": {
+          ".validate": "newData.val() === $groupId"
+        },
+        "members": {
+          "$memberId": {
+            ".validate": "newData.isBoolean()"
+          }
+        },
+        "memberCount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "category": {
+          ".validate": "newData.isString() && newData.val().length <= 50"
+        },
+        "location": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        },
+        "imageUrl": {
+          ".validate": "newData.isString()"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    
+    "posts": {
+      ".read": true,
+      "$postId": {
+        ".write": "!data.exists() && auth != null || data.child('uid').val() === auth.uid",
+        ".validate": "newData.hasChildren(['postId', 'uid', 'username', 'caption'])",
+        
+        "postId": {
+          ".validate": "newData.val() === $postId"
+        },
+        "uid": {
+          ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())"
+        },
+        "username": {
+          ".validate": "newData.isString()"
+        },
+        "caption": {
+          ".validate": "newData.isString() && newData.val().length <= 2000"
+        },
+        "imageUrl": {
+          ".validate": "newData.isString()"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber()"
+        },
+        "likesCount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "commentsCount": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "groupId": {
+          ".validate": "newData.isString()"
+        },
+        "likes": {
+          "$userId": {
+            ".write": "$userId === auth.uid",
+            ".validate": "newData.isBoolean()"
+          }
+        }
+      }
+    },
+    
+    "comments": {
+      ".read": true,
+      "$postId": {
+        "$commentId": {
+          ".write": "!data.exists() && auth != null || data.child('userId').val() === auth.uid",
+          ".validate": "newData.hasChildren(['commentId', 'postId', 'userId', 'username', 'commentText', 'timestamp'])",
+          
+          "commentId": {
+            ".validate": "newData.val() === $commentId"
+          },
+          "postId": {
+            ".validate": "newData.val() === $postId"
+          },
+          "userId": {
+            ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())"
+          },
+          "username": {
+            ".validate": "newData.isString()"
+          },
+          "commentText": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 1000"
+          },
+          "timestamp": {
+            ".validate": "newData.isNumber()"
+          },
+          "profileImageUrl": {
+            ".validate": "newData.isString()"
+          }
+        }
+      }
+    },
+    
+    "opportunities": {
+      ".read": true,
+      "$opportunityId": {
+        ".write": "!data.exists() && auth != null || data.child('createdBy').val() === auth.uid || root.child('groups').child(data.child('groupId').val()).child('members').child(auth.uid).exists()",
+        ".validate": "newData.hasChildren(['opportunityId', 'title', 'description', 'date', 'location'])",
+        
+        "opportunityId": {
+          ".validate": "newData.val() === $opportunityId"
+        },
+        "title": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200"
+        },
+        "description": {
+          ".validate": "newData.isString() && newData.val().length <= 2000"
+        },
+        "date": {
+          ".validate": "newData.isString()"
+        },
+        "startTime": {
+          ".validate": "newData.isString()"
+        },
+        "endTime": {
+          ".validate": "newData.isString()"
+        },
+        "location": {
+          ".validate": "newData.isString() && newData.val().length <= 200"
+        },
+        "category": {
+          ".validate": "newData.isString() && newData.val().length <= 50"
+        },
+        "createdBy": {
+          ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())"
+        },
+        "groupId": {
+          ".validate": "newData.isString()"
+        },
+        "maxVolunteers": {
+          ".validate": "newData.isNumber() && newData.val() > 0"
+        },
+        "currentVolunteers": {
+          ".validate": "newData.isNumber() && newData.val() >= 0"
+        },
+        "participants": {
+          "$userId": {
+            ".write": "$userId === auth.uid",
+            ".validate": "newData.isBoolean()"
+          }
+        },
+        "status": {
+          ".validate": "newData.isString() && (newData.val() === 'active' || newData.val() === 'completed' || newData.val() === 'cancelled')"
+        },
+        "imageUrl": {
+          ".validate": "newData.isString()"
+        },
+        "contactPerson": {
+          ".validate": "newData.isString()"
+        },
+        "contactEmail": {
+          ".validate": "newData.isString()"
+        },
+        "contactPhone": {
+          ".validate": "newData.isString()"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        }
+      }
+    },
+    
+    "chat": {
+      "conversations": {
+        "$conversationId": {
+          ".read": "auth != null && data.child('participants').child(auth.uid).exists()",
+          ".write": "auth != null && (!data.exists() || data.child('participants').child(auth.uid).exists())",
+          
+          "participants": {
+            "$userId": {
+              ".validate": "newData.isBoolean()"
+            }
+          },
+          "type": {
+            ".validate": "newData.isString() && (newData.val() === 'group' || newData.val() === 'direct')"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length <= 100"
+          },
+          "groupId": {
+            ".validate": "newData.isString()"
+          }
+        }
+      },
+      
+      "messages": {
+        "$conversationId": {
+          ".read": "auth != null && root.child('chat/conversations').child($conversationId).child('participants').child(auth.uid).exists()",
+          "$messageId": {
+            ".write": "auth != null && root.child('chat/conversations').child($conversationId).child('participants').child(auth.uid).exists()",
+            ".validate": "newData.hasChildren(['messageId', 'conversationId', 'senderId', 'text', 'timestamp'])",
+            
+            "messageId": {
+              ".validate": "newData.val() === $messageId"
+            },
+            "conversationId": {
+              ".validate": "newData.val() === $conversationId"
+            },
+            "senderId": {
+              ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())"
+            },
+            "senderName": {
+              ".validate": "newData.isString()"
+            },
+            "senderImageUrl": {
+              ".validate": "newData.isString()"
+            },
+            "text": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 5000"
+            },
+            "timestamp": {
+              ".validate": "newData.isNumber()"
+            },
+            "type": {
+              ".validate": "newData.isString() && (newData.val() === 'text' || newData.val() === 'image')"
+            },
+            "imageUrl": {
+              ".validate": "newData.isString()"
+            },
+            "readBy": {
+              "$userId": {
+                ".write": "$userId === auth.uid",
+                ".validate": "newData.isNumber()"
+              }
+            }
+          }
+        }
+      },
+      
+      "userConversations": {
+        "$userId": {
+          ".read": "$userId === auth.uid",
+          ".write": "$userId === auth.uid",
+          "$conversationId": {
+            "lastRead": {
+              ".validate": "newData.isNumber()"
+            },
+            "unreadCount": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            }
+          }
+        }
+      }
+    },
+    
+    "leaderboard": {
+      ".read": true,
+      "allTime": {
+        "$userId": {
+          ".write": "$userId === auth.uid",
+          ".validate": "newData.hasChildren(['userId', 'username', 'name', 'hoursVolunteered', 'score'])",
+          
+          "userId": {
+            ".validate": "newData.val() === $userId"
+          },
+          "username": {
+            ".validate": "newData.isString()"
+          },
+          "name": {
+            ".validate": "newData.isString()"
+          },
+          "profileImageUrl": {
+            ".validate": "newData.isString()"
+          },
+          "hoursVolunteered": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "opportunitiesParticipated": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "groupsJoined": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "score": {
+            ".validate": "newData.isNumber() && newData.val() >= 0"
+          },
+          "rank": {
+            ".validate": "newData.isNumber() && newData.val() > 0"
+          },
+          "badges": {
+            ".validate": "newData.hasChildren()"
+          },
+          "updatedAt": {
+            ".validate": "newData.isNumber()"
+          }
+        }
+      },
+      "monthly": {
+        "$period": {
+          "$userId": {
+            ".write": "$userId === auth.uid",
+            "userId": {
+              ".validate": "newData.val() === $userId"
+            },
+            "score": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            }
+          }
+        }
+      },
+      "weekly": {
+        "$period": {
+          "$userId": {
+            ".write": "$userId === auth.uid",
+            "userId": {
+              ".validate": "newData.val() === $userId"
+            },
+            "score": {
+              ".validate": "newData.isNumber() && newData.val() >= 0"
+            }
+          }
+        }
+      }
+    },
+    
+    "userGroups": {
+      "$userId": {
+        ".read": "$userId === auth.uid",
+        ".write": "$userId === auth.uid",
+        "$groupId": {
+          "groupId": {
+            ".validate": "newData.val() === $groupId"
+          },
+          "name": {
+            ".validate": "newData.isString()"
+          },
+          "role": {
+            ".validate": "newData.isString() && (newData.val() === 'admin' || newData.val() === 'member')"
+          },
+          "joinedAt": {
+            ".validate": "newData.isNumber()"
+          }
+        }
+      }
+    }
+  }
+}
