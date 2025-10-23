@@ -52,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
     private boolean isBioEditing = false;
     private List<Post> postList;
     private PostAdapter postAdapter;
+    private String currentProfileImageUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +102,9 @@ public class ProfileActivity extends AppCompatActivity {
                             binding.nameTextView.setText(helperClass.getName());
                             binding.emailTextView.setText(helperClass.getEmail());
                             binding.bioEditText.setText(helperClass.getBio());
+
+                            // Store the profile image URL
+                            currentProfileImageUrl = helperClass.getProfileImageUrl() != null ? helperClass.getProfileImageUrl() : "";
 
                             // Load profile image using Glide
                             Glide.with(ProfileActivity.this)
@@ -224,13 +228,9 @@ public class ProfileActivity extends AppCompatActivity {
         binding.postsRecyclerView.setAdapter(postAdapter);
 
         binding.profileImageCard.setOnClickListener(v -> {
-            // Get the URL of the current profile image
-            // (You'll need to implement the logic to get the profile image URL)
-            String profileImageUrl = ""; // Replace with the actual logic
-
             // Start FullScreenImageActivity and pass the image URL
             Intent intent = new Intent(ProfileActivity.this, FullScreenImageActivity.class);
-            intent.putExtra("imageUrl", profileImageUrl);
+            intent.putExtra("imageUrl", currentProfileImageUrl);
             startActivity(intent);
         });
 
