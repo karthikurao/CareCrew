@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.android)
 }
 android {
     namespace = "com.societal.carecrew"
@@ -11,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.societal.carecrew"
         minSdk = 29
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -31,34 +32,35 @@ android {
     }
 }
 dependencies {
+    // Core AndroidX libraries
+    implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    
+    // Firebase libraries
+    implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
     implementation(libs.firebase.database)
-    dependencies {
-// Core AndroidX libraries
-        implementation("androidx.core:core-ktx:1.9.0")
-// UI libraries
-        implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-// Firebase libraries
-        implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
-        implementation("com.google.firebase:firebase-auth-ktx")
-        implementation("com.google.android.gms:play-services-auth:20.6.0")
-        implementation("com.google.firebase:firebase-analytics-ktx")
-// Networking library
-        implementation(libs.okhttp)
-// Image loading library
-        implementation("com.github.bumptech.glide:glide:4.13.0")
-        annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
-// Other dependencies
-        testImplementation("junit:junit:4.13.2") // For unit testing
-        androidTestImplementation("androidx.test.ext:junit:1.1.5") // For instrumentation testing
-        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // For UI testing
-// Maps SDK for Android
-        implementation("com.google.android.gms:play-services-maps:18.1.0")
-
-        //animation dependency
-        implementation("com.airbnb.android:lottie:6.1.0")
-    }
+    
+    // Google Play Services
+    implementation(libs.play.services.auth)
+    implementation(libs.play.services.maps)
+    
+    // Networking library
+    implementation(libs.okhttp)
+    
+    // Image loading library
+    implementation(libs.glide)
+    annotationProcessor(libs.glide.compiler)
+    
+    // Animation dependency
+    implementation(libs.lottie)
+    
+    // Testing dependencies
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.espresso.core)
 }
