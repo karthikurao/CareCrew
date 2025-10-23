@@ -24,7 +24,10 @@ public class HomePageActivity extends AppCompatActivity {
     private ActivityHomePageBinding binding;
     private PostAdapter postAdapter;
     private List<Post> postList;
+    private OpportunityAdapter opportunityAdapter;
+    private List<Opportunity> opportunityList;
     private DatabaseReference postsRef;
+    private DatabaseReference opportunitiesRef;
     private FirebaseAuth mAuth;
 
     @Override
@@ -33,10 +36,32 @@ public class HomePageActivity extends AppCompatActivity {
         binding = ActivityHomePageBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Setup Posts RecyclerView
         binding.postRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(postList, this);
         binding.postRecyclerView.setAdapter(postAdapter);
+
+        // Setup Opportunities RecyclerView (Horizontal)
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        binding.opportunitiesRecyclerView.setLayoutManager(horizontalLayoutManager);
+        opportunityList = new ArrayList<>();
+        opportunityAdapter = new OpportunityAdapter(opportunityList, null, true);
+        binding.opportunitiesRecyclerView.setAdapter(opportunityAdapter);
+
+        // Quick Action Cards Click Listeners
+        binding.mapsCard.setOnClickListener(v -> {
+            startActivity(new Intent(HomePageActivity.this, MapsActivity.class));
+        });
+
+        binding.groupsCard.setOnClickListener(v -> {
+            startActivity(new Intent(HomePageActivity.this, GroupsActivity.class));
+        });
+
+        // See All Opportunities Click Listener
+        binding.seeAllOpportunitiesText.setOnClickListener(v -> {
+            startActivity(new Intent(HomePageActivity.this, MapsActivity.class));
+        });
 
         binding.createPostButton.setOnClickListener(v -> {
             Intent intent = new Intent(HomePageActivity.this, CreatePostActivity.class);
@@ -69,6 +94,7 @@ public class HomePageActivity extends AppCompatActivity {
             finish();
         } else {
             fetchPosts();
+            fetchOpportunities();
         }
     }
 
@@ -103,6 +129,28 @@ public class HomePageActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(HomePageActivity.this, "Failed to fetch posts: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e("HomePageActivity", "Failed to fetch posts: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    private void fetchOpportunities() {
+        opportunitiesRef = FirebaseDatabase.getInstance().getReference("opportunities");
+        opportunitiesRef.limitToFirst(5).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                opportunityList.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Opportunity opportunity = snapshot.getValue(Opportunity.class);
+                    if (opportunity != null) {
+                        opportunityList.add(opportunity);
+                    }
+                }
+                opportunityAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("HomePageActivity", "Failed to fetch opportunities: " + databaseError.getMessage());
             }
         });
     }
