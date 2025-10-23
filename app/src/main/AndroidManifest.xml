@@ -64,6 +64,9 @@
             android:name=".SignupActivity"
             android:exported="false" />
         <activity
+            android:name=".WelcomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
