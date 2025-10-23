@@ -46,6 +46,8 @@ dependencies {
         implementation("com.google.firebase:firebase-auth-ktx")
         implementation("com.google.android.gms:play-services-auth:20.6.0")
         implementation("com.google.firebase:firebase-analytics-ktx")
+        // Phone Authentication for 2FA
+        implementation("com.google.firebase:firebase-auth")
 // Networking library
         implementation(libs.okhttp)
 // Image loading library

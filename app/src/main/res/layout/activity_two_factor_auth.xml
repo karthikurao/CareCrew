@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/lockIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="24dp"
+            android:src="@android:drawable/ic_lock_idle_lock"
+            android:contentDescription="@string/security_lock_icon" />
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/two_factor_authentication"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/two_fa_description"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:textAlignment="center"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Phone Number Input Section -->
+        <LinearLayout
+            android:id="@+id/phoneNumberSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/phone_number"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneNumberEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sendCodeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/send_verification_code"
+                android:textAllCaps="false"
+                android:padding="12dp" />
+        </LinearLayout>
+
+        <!-- OTP Verification Section -->
+        <LinearLayout
+            android:id="@+id/otpSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/otpSentTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/otp_sent_message"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="center" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/verification_code"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/otpEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/verifyCodeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/verify_code"
+                android:textAllCaps="false"
+                android:padding="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/resendCodeButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/resend_code"
+                android:textAllCaps="false"
+                android:backgroundTint="@android:color/transparent"
+                android:textColor="?attr/colorPrimary"
+                style="@style/Widget.MaterialComponents.Button.TextButton" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/skipButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/skip_for_now"
+            android:textAllCaps="false"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="@android:color/darker_gray"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
+    </LinearLayout>
+</ScrollView>

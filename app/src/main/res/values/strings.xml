@@ -32,5 +32,22 @@
     <string name="profile_image">Profile Image</string>
     <string name="opportunities">Opportunities</string>
     <string name="default_web_client_id">323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com</string>
+    
+    <!-- Two-Factor Authentication Strings -->
+    <string name="security_lock_icon">Security Lock Icon</string>
+    <string name="two_factor_authentication">Two-Factor Authentication</string>
+    <string name="two_fa_description">Secure your account with an additional layer of protection</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="send_verification_code">Send Verification Code</string>
+    <string name="otp_sent_message">We\'ve sent a verification code to your phone number</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verify_code">Verify Code</string>
+    <string name="resend_code">Resend Code</string>
+    <string name="skip_for_now">Skip for now</string>
+    <string name="enable_two_fa">Enable Two-Factor Authentication</string>
+    <string name="disable_two_fa">Disable Two-Factor Authentication</string>
+    <string name="two_fa_status">2FA Status: %s</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
 
 </resources>

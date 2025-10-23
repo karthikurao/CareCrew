@@ -83,7 +83,9 @@ public class SignupActivity extends AppCompatActivity {
                                 reference.child(user.getUid()).setValue(helperClass)
                                         .addOnSuccessListener(aVoid -> {
                                             Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
-                                            startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
+                                            // Offer 2FA setup after signup
+                                            Intent intent = new Intent(SignupActivity.this, TwoFactorAuthActivity.class);
+                                            startActivity(intent);
                                             finish();
                                         })
                                         .addOnFailureListener(e -> {

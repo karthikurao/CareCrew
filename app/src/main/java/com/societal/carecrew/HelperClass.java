@@ -23,6 +23,7 @@ public class HelperClass {
     private String aboutMe;
     private List<VolunteerExperience> volunteerExperience;
     private Map<String, String> socialLinks; // Added for social links
+    private boolean twoFactorEnabled; // Two-Factor Authentication status
 
     // Constructor
     public HelperClass(String name, String email, String username, String password) {
@@ -38,6 +39,7 @@ public class HelperClass {
         this.groupsJoined = 0;
         this.location = "";
         this.aboutMe = "";
+        this.twoFactorEnabled = false;
         // ... initialize other fields as needed
     }
 
@@ -185,6 +187,14 @@ public class HelperClass {
 
     public void setSocialLinks(Map<String, String> socialLinks) {
         this.socialLinks = socialLinks;
+    }
+
+    public boolean isTwoFactorEnabled() {
+        return twoFactorEnabled;
+    }
+
+    public void setTwoFactorEnabled(boolean twoFactorEnabled) {
+        this.twoFactorEnabled = twoFactorEnabled;
     }
 
     // No-argument constructor for Firebase

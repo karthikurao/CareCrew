@@ -14,6 +14,7 @@ The app simplifies the process of signing up, finding local volunteer opportunit
 ## 📱 Key Features
 
 - 🔐 **User Authentication**: Secure signup/login using Firebase Authentication.
+- 🔒 **Two-Factor Authentication (2FA)**: Enhanced security with phone-based verification.
 - 🔁 **Persistent Sessions**: Auto-login unless manually logged out.
 - 🗘️ **Volunteer Mapping**: Real-time map showing active areas and volunteers.
 - 💬 **In-App Chat**: Communication between volunteers.
@@ -48,6 +49,7 @@ git clone https://github.com/yourusername/care-crew.git
 
 - Create a project on [Firebase Console](https://console.firebase.google.com/).
 - Enable **Email/Password Authentication** and **Realtime Database**.
+- Enable **Phone Authentication** for Two-Factor Authentication (2FA).
 - Download the `google-services.json` file.
 - Place it inside the `/app` directory.
 
@@ -62,11 +64,46 @@ git clone https://github.com/yourusername/care-crew.git
 
 - **Splash Screen**: Checks if the user is already authenticated.
 - **Login / Sign Up**: Only shown if no existing login session.
+- **Two-Factor Authentication**: Optional phone-based 2FA setup after signup for enhanced security.
 - **Home Screen**: Displays volunteer options, groups, and maps.
-- **Profile Section**: Allows users to log out manually.
+- **Profile Section**: Allows users to manage 2FA settings and log out manually.
 
 ---
 
+
+## 🔒 Two-Factor Authentication (2FA)
+
+Care Crew now supports Two-Factor Authentication to provide an extra layer of security to user accounts.
+
+### How to Enable 2FA
+
+1. **During Signup**: After creating a new account, you'll be prompted to set up 2FA. You can either:
+   - Enter your phone number to enable 2FA immediately
+   - Skip the setup and enable it later from your profile
+
+2. **From Profile Settings**: Existing users can enable 2FA by:
+   - Navigate to your Profile
+   - Click on the "Enable Two-Factor Authentication" button
+   - Enter your phone number (with country code, e.g., +1234567890)
+   - Click "Send Verification Code"
+   - Enter the 6-digit code sent to your phone
+   - Click "Verify Code" to complete the setup
+
+### How 2FA Works
+
+- Once enabled, your phone number is linked to your account
+- The 2FA status is stored in Firebase Realtime Database under your user profile
+- Users can manage their 2FA settings from the Profile page
+- The button label changes to "Disable Two-Factor Authentication" when 2FA is active
+
+### Firebase Configuration for 2FA
+
+To use 2FA in your deployment:
+1. Enable **Phone Authentication** in Firebase Console
+2. Configure your app's SHA-1 fingerprint in Firebase project settings
+3. Ensure your Firebase project has the Phone Auth provider enabled
+
+---
 
 ## 🛃️ Future Plans
 
@@ -75,7 +112,6 @@ git clone https://github.com/yourusername/care-crew.git
 - 📸 Profile picture uploads.
 - 🫩 Event creation features.
 - 📊 Admin Analytics Dashboard.
-- 🔒 Two-Factor Authentication (2FA) for extra security.
 
 ---
 

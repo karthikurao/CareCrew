@@ -185,6 +185,9 @@ public class ProfileActivity extends AppCompatActivity {
                                 Log.e("ProfileActivity", "volunteerExperience is null");
                                 // You might want to show a message or hide the RecyclerView
                             }
+
+                            // Update 2FA button text based on status
+                            updateTwoFactorButton(helperClass.isTwoFactorEnabled());
                         }
                     }
                 }
@@ -237,6 +240,12 @@ public class ProfileActivity extends AppCompatActivity {
         binding.editProfileButton.setOnClickListener(v -> {
             // Start EditProfileActivity
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
+            startActivity(intent);
+        });
+
+        binding.twoFactorAuthButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, TwoFactorAuthActivity.class);
+            intent.putExtra("fromSettings", true);
             startActivity(intent);
         });
 
@@ -384,5 +393,13 @@ public class ProfileActivity extends AppCompatActivity {
                 .load(imageUrl)
                 .placeholder(R.drawable.default_profile_image)
                 .into(binding.profileImageView);
+    }
+
+    private void updateTwoFactorButton(boolean enabled) {
+        if (enabled) {
+            binding.twoFactorAuthButton.setText(R.string.disable_two_fa);
+        } else {
+            binding.twoFactorAuthButton.setText(R.string.enable_two_fa);
+        }
     }
 }

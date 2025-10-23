@@ -19,6 +19,9 @@
             android:name=".GroupDetailsActivity"
             android:exported="false" />
         <activity
+            android:name=".TwoFactorAuthActivity"
+            android:exported="false" />
+        <activity
             android:name=".PostThreadsActivity"
             android:exported="false" />
         <activity
