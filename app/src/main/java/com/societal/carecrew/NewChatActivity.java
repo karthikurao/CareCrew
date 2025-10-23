@@ -24,7 +24,7 @@ public class NewChatActivity extends AppCompatActivity implements VolunteerAdapt
 
     private ActivityNewChatBinding binding;
     private VolunteerAdapter volunteerAdapter;
-    private List<HelperClass> volunteerList;
+    private List<Volunteer> volunteerList;
     private DatabaseReference usersRef;
     private String currentUserId;
 
@@ -53,9 +53,11 @@ public class NewChatActivity extends AppCompatActivity implements VolunteerAdapt
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 volunteerList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    if (!snapshot.getKey().equals(currentUserId)) {
-                        HelperClass volunteer = snapshot.getValue(HelperClass.class);
-                        if (volunteer != null) {
+                    String userId = snapshot.getKey();
+                    if (!userId.equals(currentUserId)) {
+                        HelperClass user = snapshot.getValue(HelperClass.class);
+                        if (user != null) {
+                            Volunteer volunteer = new Volunteer(userId, user.getName(), user.getUsername());
                             volunteerList.add(volunteer);
                         }
                     }
@@ -72,14 +74,14 @@ public class NewChatActivity extends AppCompatActivity implements VolunteerAdapt
     }
 
     @Override
-    public void onVolunteerClick(HelperClass volunteer) {
+    public void onVolunteerClick(Volunteer volunteer) {
         createOrOpenChat(volunteer);
     }
 
-    private void createOrOpenChat(HelperClass volunteer) {
+    private void createOrOpenChat(Volunteer volunteer) {
         DatabaseReference chatsRef = FirebaseDatabase.getInstance().getReference("chats");
         
-        String chatRoomId = getChatRoomId(currentUserId, volunteer.getUsername());
+        String chatRoomId = getChatRoomId(currentUserId, volunteer.getUserId());
         
         chatsRef.child(chatRoomId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -87,7 +89,7 @@ public class NewChatActivity extends AppCompatActivity implements VolunteerAdapt
                 if (!dataSnapshot.exists()) {
                     Map<String, Boolean> participants = new HashMap<>();
                     participants.put(currentUserId, true);
-                    participants.put(volunteer.getUsername(), true);
+                    participants.put(volunteer.getUserId(), true);
                     
                     ChatRoom chatRoom = new ChatRoom(
                         chatRoomId,

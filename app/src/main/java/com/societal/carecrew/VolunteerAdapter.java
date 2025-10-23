@@ -11,14 +11,14 @@ import java.util.List;
 
 public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.VolunteerViewHolder> {
 
-    private List<HelperClass> volunteers;
+    private List<Volunteer> volunteers;
     private OnVolunteerClickListener listener;
 
     public interface OnVolunteerClickListener {
-        void onVolunteerClick(HelperClass volunteer);
+        void onVolunteerClick(Volunteer volunteer);
     }
 
-    public VolunteerAdapter(List<HelperClass> volunteers, OnVolunteerClickListener listener) {
+    public VolunteerAdapter(List<Volunteer> volunteers, OnVolunteerClickListener listener) {
         this.volunteers = volunteers;
         this.listener = listener;
     }
@@ -32,7 +32,7 @@ public class VolunteerAdapter extends RecyclerView.Adapter<VolunteerAdapter.Volu
 
     @Override
     public void onBindViewHolder(@NonNull VolunteerViewHolder holder, int position) {
-        HelperClass volunteer = volunteers.get(position);
+        Volunteer volunteer = volunteers.get(position);
         holder.volunteerName.setText(volunteer.getName());
         holder.volunteerUsername.setText("@" + volunteer.getUsername());
         
