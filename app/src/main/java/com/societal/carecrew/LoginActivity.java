@@ -64,12 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-
-                            // Save login status in SharedPreferences
-                            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
-                                    .putBoolean("is_logged_in", true)
-                                    .apply();
-
+                            // User is now authenticated via FirebaseAuth
                             updateUI(user);
                         } else {
                             Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
@@ -113,12 +108,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-
-                        // Save login status in SharedPreferences (for Google Sign-In)
-                        getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
-                                .putBoolean("is_logged_in", true)
-                                .apply();
-
+                        // User is now authenticated via FirebaseAuth
                         updateUI(user);
                     } else {
                         Log.w("LoginActivity", "signInWithCredential:failure", task.getException());

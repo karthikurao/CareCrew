@@ -82,11 +82,7 @@ public class SignupActivity extends AppCompatActivity {
                                 HelperClass helperClass = new HelperClass(name, email, username, password);
                                 reference.child(user.getUid()).setValue(helperClass)
                                         .addOnSuccessListener(aVoid -> {
-                                            // Save login status in SharedPreferences
-                                            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
-                                                    .putBoolean("is_logged_in", true)
-                                                    .apply();
-
+                                            // User is now authenticated via FirebaseAuth
                                             Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
                                             startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
                                             finish();
@@ -158,11 +154,7 @@ public class SignupActivity extends AppCompatActivity {
             HelperClass helperClass = new HelperClass(name, user.getEmail(), username, ""); // Don't store password here
             reference.child(user.getUid()).setValue(helperClass);
 
-            // Save login status in SharedPreferences (for Google Sign-In)
-            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
-                    .putBoolean("is_logged_in", true)
-                    .apply();
-
+            // User is now authenticated via FirebaseAuth
             Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
             finish();
