@@ -25,20 +25,17 @@ public class FCMService extends FirebaseMessagingService {
 
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
-        // Check if message contains a notification payload
-        if (remoteMessage.getNotification() != null) {
+        // Prefer data payload when present to avoid duplicate notifications
+        if (remoteMessage.getData().size() > 0) {
+            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            handleDataMessage(remoteMessage);
+        } else if (remoteMessage.getNotification() != null) {
             String title = remoteMessage.getNotification().getTitle();
             String body = remoteMessage.getNotification().getBody();
             Log.d(TAG, "Notification Title: " + title);
             Log.d(TAG, "Notification Body: " + body);
-            
-            sendNotification(title, body);
-        }
 
-        // Check if message contains a data payload
-        if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            handleDataMessage(remoteMessage);
+            sendNotification(title, body);
         }
     }
 
