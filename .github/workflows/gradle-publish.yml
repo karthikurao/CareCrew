@@ -39,9 +39,10 @@ jobs:
         if-no-files-found: error
 
     - name: Upload Release APK to Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: app/build/outputs/apk/release/app-release-unsigned.apk
+        make_latest: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
