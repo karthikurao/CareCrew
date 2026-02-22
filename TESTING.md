@@ -135,7 +135,7 @@ The project uses the following testing libraries:
 - **Robolectric 4.11.1**: Android unit testing framework for testing Android-specific code without an emulator
 - **AndroidX Test JUnit 1.1.5**: Extensions for instrumented tests
 - **Espresso Core 3.5.1**: UI testing framework for Android
-- **Espresso Intents 3.5.1**: Intent validation and stubbing for UI tests
+- **Espresso Intents 3.5.1**: Currently initialized in UI tests and available for intent validation/stubbing (e.g., via `intended(...)` / `intending(...)`) when needed
 
 ## Testing Best Practices
 
