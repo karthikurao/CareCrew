@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ActivityProfileBinding binding;
     private static final int PICK_IMAGE_REQUEST = 1;
-    private static final String IMG_BB_API_KEY = "fe3ec739386bdf08dec5cae269f7cb10"; // Replace with your actual API key
+    private static final String IMG_BB_API_KEY = BuildConfig.IMG_BB_API_KEY;
     private Uri imageUri;
     private ProgressDialog progressDialog;
     private boolean isBioEditing = false;

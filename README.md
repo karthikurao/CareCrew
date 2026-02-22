@@ -49,9 +49,19 @@ git clone https://github.com/yourusername/care-crew.git
 - Create a project on [Firebase Console](https://console.firebase.google.com/).
 - Enable **Email/Password Authentication** and **Realtime Database**.
 - Download the `google-services.json` file.
-- Place it inside the `/app` directory.
+- Place it inside the `/app` directory (see `app/google-services.json.example` for the expected structure).
 
-### 4. Build and Run
+### 4. Configure API Keys
+
+Add the following to your `local.properties` file (this file is git-ignored and should never be committed):
+
+```properties
+IMG_BB_API_KEY=your_imgbb_api_key_here
+```
+
+You can obtain an ImgBB API key from [https://api.imgbb.com/](https://api.imgbb.com/).
+
+### 5. Build and Run
 
 - Connect your emulator or real device.
 - Hit the **Run** ▶️ button in Android Studio.
