@@ -5,8 +5,8 @@ This document summarizes the comprehensive test suite implemented for the Care C
 
 ## Test Statistics
 
-- **Total Unit Tests**: 36 tests across 6 test classes
-- **Total UI Tests**: 19 tests across 3 test classes
+- **Total Unit Tests**: 39 tests across 6 test classes
+- **Total UI Tests**: 16 tests across 3 test classes
 - **Total Test Coverage**: 55 tests
 - **Test Types**: Unit tests (JUnit + Robolectric), Instrumented tests (Espresso)
 
@@ -25,11 +25,11 @@ Main user model testing with comprehensive coverage:
 - ✅ Social links management
 - ✅ No-argument constructor (Firebase)
 
-### 2. GroupTest (7 tests)
+### 2. GroupTest (6 tests)
 Group model testing:
 - ✅ Constructor initialization
 - ✅ All getters and setters
-- ✅ Members management
+- ✅ Members map management via `setMembers(...)`
 - ✅ Null members handling
 - ✅ Empty members handling
 - ✅ No-argument constructor (Firebase)
@@ -60,7 +60,7 @@ Volunteer experience model testing:
 - ✅ Empty strings handling
 - ✅ Experience updates
 
-### 6. AvailabilityTest (8 tests)
+### 6. AvailabilityTest (6 tests)
 Availability model testing:
 - ✅ Constructor initialization
 - ✅ All getters and setters
@@ -68,11 +68,10 @@ Availability model testing:
 - ✅ No available schedule
 - ✅ Weekend mornings only
 - ✅ Weekday evenings only
-- ✅ Various availability combinations
 
 ## UI/Instrumented Tests Breakdown
 
-### 1. LoginActivityTest (8 tests)
+### 1. LoginActivityTest (7 tests)
 Login screen functionality:
 - ✅ Activity launches successfully
 - ✅ Login button visibility
@@ -81,7 +80,6 @@ Login screen functionality:
 - ✅ Email input accepts text
 - ✅ Password input accepts text
 - ✅ Complete form can be filled
-- ✅ All UI elements displayed
 
 ### 2. SignupActivityTest (8 tests)
 Signup screen functionality:
@@ -94,12 +92,9 @@ Signup screen functionality:
 - ✅ Password input accepts text
 - ✅ Complete form can be filled
 
-### 3. HomePageActivityTest (4 tests)
-Home page functionality:
-- ✅ Activity launches successfully
-- ✅ Create post button visibility
-- ✅ Navigation view visibility
-- ✅ Post RecyclerView visibility
+### 3. HomePageActivityTest (1 test)
+Home page authentication redirect:
+- ✅ Unauthenticated user redirects to LoginActivity
 
 ## Dependencies Added
 

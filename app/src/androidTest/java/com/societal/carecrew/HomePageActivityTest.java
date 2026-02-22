@@ -13,15 +13,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 
 /**
- * Instrumented test for HomePageActivity
- * Note: These tests verify UI elements are present. 
- * Full integration tests would require Firebase authentication to be set up.
+ * Instrumented test for HomePageActivity.
+ * HomePageActivity redirects unauthenticated users to LoginActivity in onStart(),
+ * so tests verify this redirect behavior rather than authenticated-only UI elements.
  */
 @RunWith(AndroidJUnit4.class)
 public class HomePageActivityTest {
@@ -37,44 +35,14 @@ public class HomePageActivityTest {
     }
 
     @Test
-    public void testHomePageActivityLaunches() {
+    public void testUnauthenticatedUserRedirectsToLogin() {
+        // In a test environment FirebaseAuth.getCurrentUser() returns null,
+        // so HomePageActivity.onStart() immediately starts LoginActivity.
         Context context = ApplicationProvider.getApplicationContext();
         Intent intent = new Intent(context, HomePageActivity.class);
-        
-        try (ActivityScenario<HomePageActivity> scenario = ActivityScenario.launch(intent)) {
-            // Verify key UI elements are displayed
-            onView(withId(R.id.postRecyclerView)).check(matches(isDisplayed()));
-            onView(withId(R.id.createPostButton)).check(matches(isDisplayed()));
-        }
-    }
 
-    @Test
-    public void testCreatePostButtonIsVisible() {
-        Context context = ApplicationProvider.getApplicationContext();
-        Intent intent = new Intent(context, HomePageActivity.class);
-        
         try (ActivityScenario<HomePageActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.createPostButton)).check(matches(isDisplayed()));
-        }
-    }
-
-    @Test
-    public void testNavigationViewIsVisible() {
-        Context context = ApplicationProvider.getApplicationContext();
-        Intent intent = new Intent(context, HomePageActivity.class);
-        
-        try (ActivityScenario<HomePageActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.navView)).check(matches(isDisplayed()));
-        }
-    }
-
-    @Test
-    public void testPostRecyclerViewIsVisible() {
-        Context context = ApplicationProvider.getApplicationContext();
-        Intent intent = new Intent(context, HomePageActivity.class);
-        
-        try (ActivityScenario<HomePageActivity> scenario = ActivityScenario.launch(intent)) {
-            onView(withId(R.id.postRecyclerView)).check(matches(isDisplayed()));
+            intended(hasComponent(LoginActivity.class.getName()));
         }
     }
 }

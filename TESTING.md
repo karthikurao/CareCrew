@@ -23,7 +23,7 @@ Tests the main user model class with the following coverage:
 #### 2. **GroupTest**
 Tests the Group model class:
 - Group creation with ID, name, description, and creator
-- Member management (add/remove members)
+- Members map management via `setMembers(...)`
 - Null and empty members handling
 - Firebase no-argument constructor
 
@@ -76,11 +76,8 @@ Tests the signup screen functionality:
 - Login redirect text is visible
 
 #### 3. **HomePageActivityTest**
-Tests the main home page:
-- Activity launches successfully
-- Post RecyclerView is displayed
-- Create post button is visible
-- Navigation view is displayed
+Tests the HomePageActivity authentication guard:
+- Unauthenticated users are redirected to LoginActivity (verified via Espresso Intents)
 
 ## Running the Tests
 
