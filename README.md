@@ -67,6 +67,31 @@ git clone https://github.com/yourusername/care-crew.git
 
 ---
 
+## ⚙️ CI/CD Workflows
+
+This project uses GitHub Actions for automated build, test, and deployment:
+
+### 🔄 Android CI (gradle.yml)
+- **Triggers**: Push and Pull Requests to `main` branch
+- **Jobs**:
+  - **Build and Test**: Runs lint checks, builds debug APK, and executes unit tests
+  - **Dependency Submission**: Generates and submits dependency graph for Dependabot
+
+### ✅ Pull Request Checks (pr-checks.yml)
+- **Triggers**: Pull Requests to `main` branch
+- **Jobs**:
+  - **Lint Check**: Runs Android Lint and uploads results
+  - **Unit Tests**: Executes unit tests and uploads test reports
+  - **Build APK**: Builds debug APK and uploads as artifact
+
+### 🚀 Android Release Build (gradle-publish.yml)
+- **Triggers**: Release creation
+- **Jobs**:
+  - **Build Release APK**: Builds release APK and uploads to GitHub Release
+
+All workflows automatically cache Gradle dependencies for faster builds.
+
+---
 
 ## 🛃️ Future Plans
 

@@ -82,6 +82,7 @@ public class SignupActivity extends AppCompatActivity {
                                 HelperClass helperClass = new HelperClass(name, email, username, password);
                                 reference.child(user.getUid()).setValue(helperClass)
                                         .addOnSuccessListener(aVoid -> {
+                                            // User is now authenticated via FirebaseAuth
                                             Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
                                             startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
                                             finish();
@@ -153,6 +154,7 @@ public class SignupActivity extends AppCompatActivity {
             HelperClass helperClass = new HelperClass(name, user.getEmail(), username, ""); // Don't store password here
             reference.child(user.getUid()).setValue(helperClass);
 
+            // User is now authenticated via FirebaseAuth
             Toast.makeText(SignupActivity.this, "Signup successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SignupActivity.this, HomePageActivity.class));
             finish();

@@ -241,10 +241,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         binding.logoutButton.setOnClickListener(v -> {
+            // Sign out from Firebase Auth - this is the single source of truth
             FirebaseAuth.getInstance().signOut();
-            getSharedPreferences("app_prefs", MODE_PRIVATE).edit()
-                    .putBoolean("is_logged_in", false)
-                    .apply();
 
             // Start LoginActivity
             Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
@@ -261,6 +259,8 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(new Intent(ProfileActivity.this, MapsActivity.class));
             } else if (itemId == R.id.navigation_groups) {
                 startActivity(new Intent(ProfileActivity.this, GroupsActivity.class));
+            } else if (itemId == R.id.navigation_chat) {
+                startActivity(new Intent(ProfileActivity.this, ChatListActivity.class));
             } else if (itemId == R.id.navigation_profile) {
                 // Already on ProfileActivity, no action needed
             }
