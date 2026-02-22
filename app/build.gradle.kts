@@ -1,21 +1,39 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
     alias(libs.plugins.kotlin.android)
 }
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+
 android {
     namespace = "com.societal.carecrew"
     compileSdk = 35
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
     defaultConfig {
         applicationId = "com.societal.carecrew"
         minSdk = 29
         targetSdk = 35
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val imgBbApiKeyFromLocal = localProperties.getProperty("IMG_BB_API_KEY")
+        val imgBbApiKeyFromEnv = System.getenv("IMG_BB_API_KEY")
+        val imgBbApiKey = (imgBbApiKeyFromLocal ?: imgBbApiKeyFromEnv).orEmpty()
+        if (imgBbApiKey.isEmpty()) {
+            logger.warn("WARNING: IMG_BB_API_KEY is not set in local.properties or environment. Image uploads will not work. See README.md for setup instructions.")
+        }
+        buildConfigField("String", "IMG_BB_API_KEY", "\"${imgBbApiKey}\"")
     }
     buildTypes {
         release {

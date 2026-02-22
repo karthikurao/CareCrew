@@ -47,7 +47,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
     private DatabaseReference postsRef;
-    private static final String IMG_BB_API_KEY = "fe3ec739386bdf08dec5cae269f7cb10"; // Replace with your actual API key
+    private static final String IMG_BB_API_KEY = BuildConfig.IMG_BB_API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

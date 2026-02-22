@@ -1,0 +1,53 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., 1.0.0)'
+        required: true
+        default: '1.0.0'
+      prerelease:
+        description: 'Mark as pre-release'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  create-release:
+    name: Create Tag and Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Create and push tag
+      run: |
+        TAG="v${{ github.event.inputs.version }}"
+        git tag -a "$TAG" -m "Release $TAG"
+        git push origin "$TAG"
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: "v${{ github.event.inputs.version }}"
+        name: "v${{ github.event.inputs.version }}"
+        body: |
+          ## CareCrew v${{ github.event.inputs.version }}
+
+          See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details.
+        draft: false
+        prerelease: ${{ github.event.inputs.prerelease }}
+        make_latest: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
