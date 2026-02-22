@@ -27,9 +27,11 @@ android {
         versionName = "1.0.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val imgBbApiKey = localProperties.getProperty("IMG_BB_API_KEY", "")
+        val imgBbApiKeyFromLocal = localProperties.getProperty("IMG_BB_API_KEY")
+        val imgBbApiKeyFromEnv = System.getenv("IMG_BB_API_KEY")
+        val imgBbApiKey = (imgBbApiKeyFromLocal ?: imgBbApiKeyFromEnv).orEmpty()
         if (imgBbApiKey.isEmpty()) {
-            logger.warn("WARNING: IMG_BB_API_KEY is not set in local.properties. Image uploads will not work. See README.md for setup instructions.")
+            logger.warn("WARNING: IMG_BB_API_KEY is not set in local.properties or environment. Image uploads will not work. See README.md for setup instructions.")
         }
         buildConfigField("String", "IMG_BB_API_KEY", "\"${imgBbApiKey}\"")
     }

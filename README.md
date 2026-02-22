@@ -61,6 +61,12 @@ IMG_BB_API_KEY=your_imgbb_api_key_here
 
 You can obtain an ImgBB API key from [https://api.imgbb.com/](https://api.imgbb.com/).
 
+Alternatively, you can set `IMG_BB_API_KEY` as an environment variable.
+
+> **For CI/CD**: Add the following repository secrets in GitHub Settings → Secrets and variables → Actions:
+> - `GOOGLE_SERVICES_JSON` — The full contents of your `google-services.json` file
+> - `IMG_BB_API_KEY` — Your ImgBB API key
+
 ### 5. Build and Run
 
 - Connect your emulator or real device.
