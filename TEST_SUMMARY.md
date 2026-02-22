@@ -5,14 +5,14 @@ This document summarizes the comprehensive test suite implemented for the Care C
 
 ## Test Statistics
 
-- **Total Unit Tests**: 39 tests across 6 test classes
+- **Total Unit Tests**: 36 tests across 6 test classes
 - **Total UI Tests**: 19 tests across 3 test classes
-- **Total Test Coverage**: 58 tests
+- **Total Test Coverage**: 55 tests
 - **Test Types**: Unit tests (JUnit + Robolectric), Instrumented tests (Espresso)
 
 ## Unit Tests Breakdown
 
-### 1. HelperClassTest (13 tests)
+### 1. HelperClassTest (10 tests)
 Main user model testing with comprehensive coverage:
 - ✅ Constructor initialization
 - ✅ Default values verification
