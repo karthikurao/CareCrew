@@ -1,29 +1,31 @@
 package com.societal.carecrew;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class FCMService extends FirebaseMessagingService {
 
     private static final String TAG = "FCMService";
-    private static final String CHANNEL_ID = "urgent_volunteer_channel";
-    private static final String CHANNEL_NAME = "Urgent Volunteer Needs";
+    private static final AtomicInteger NOTIFICATION_ID_COUNTER = new AtomicInteger(0);
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         Log.d(TAG, "From: " + remoteMessage.getFrom());
+
+        // Ensure notification channels exist before posting
+        NotificationHelper.createNotificationChannels(this);
 
         // Prefer data payload when present to avoid duplicate notifications
         if (remoteMessage.getData().size() > 0) {
@@ -34,7 +36,6 @@ public class FCMService extends FirebaseMessagingService {
             String body = remoteMessage.getNotification().getBody();
             Log.d(TAG, "Notification Title: " + title);
             Log.d(TAG, "Notification Body: " + body);
-
             sendNotification(title, body);
         }
     }
@@ -43,16 +44,12 @@ public class FCMService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
         Log.d(TAG, "Refreshed token: " + token);
-        
-        // Send token to server if needed
         sendRegistrationToServer(token);
     }
 
     private void handleDataMessage(RemoteMessage remoteMessage) {
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
-        String isUrgent = remoteMessage.getData().get("urgent");
-        
         if (title != null && body != null) {
             sendNotification(title, body);
         }
@@ -61,28 +58,24 @@ public class FCMService extends FirebaseMessagingService {
     private void sendNotification(String title, String messageBody) {
         Intent intent = new Intent(this, HomePageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+
+        int notificationId = NOTIFICATION_ID_COUNTER.incrementAndGet();
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, notificationId, intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
+                new NotificationCompat.Builder(this, NotificationHelper.URGENT_CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle(title)
                         .setContentText(messageBody)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(messageBody))
                         .setAutoCancel(true)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
-        // Ensure notification channels are created/configured for Android O and above
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationHelper.createNotificationChannels(this);
-        }
-
-        notificationManager.notify(0, notificationBuilder.build());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(notificationId, notificationBuilder.build());
     }
 
     private void sendRegistrationToServer(String token) {

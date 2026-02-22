@@ -36,30 +36,27 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.database)
-    dependencies {
-// Core AndroidX libraries
-        implementation("androidx.core:core-ktx:1.9.0")
-// UI libraries
-        implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-// Firebase libraries
-        implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
-        implementation("com.google.firebase:firebase-auth-ktx")
-        implementation("com.google.android.gms:play-services-auth:20.6.0")
-        implementation("com.google.firebase:firebase-analytics-ktx")
-        implementation("com.google.firebase:firebase-messaging-ktx")
-// Networking library
-        implementation(libs.okhttp)
-// Image loading library
-        implementation("com.github.bumptech.glide:glide:4.13.0")
-        annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
-// Other dependencies
-        testImplementation("junit:junit:4.13.2") // For unit testing
-        androidTestImplementation("androidx.test.ext:junit:1.1.5") // For instrumentation testing
-        androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // For UI testing
-// Maps SDK for Android
-        implementation("com.google.android.gms:play-services-maps:18.1.0")
-
-        //animation dependency
-        implementation("com.airbnb.android:lottie:6.1.0")
-    }
+    // Core AndroidX libraries
+    implementation("androidx.core:core-ktx:1.9.0")
+    // UI libraries
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    // Firebase libraries
+    implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-auth:20.6.0")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
+    // Networking library
+    implementation(libs.okhttp)
+    // Image loading library
+    implementation("com.github.bumptech.glide:glide:4.13.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
+    // Other dependencies
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    // Maps SDK for Android
+    implementation("com.google.android.gms:play-services-maps:18.1.0")
+    // Animation dependency
+    implementation("com.airbnb.android:lottie:6.1.0")
 }

@@ -79,7 +79,7 @@ public class SignupActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             if (user != null) {
-                                HelperClass helperClass = new HelperClass(name, email, username, password);
+                                HelperClass helperClass = new HelperClass(name, email, username, ""); // Never store plaintext password
                                 reference.child(user.getUid()).setValue(helperClass)
                                         .addOnSuccessListener(aVoid -> {
                                             // Subscribe to urgent notifications

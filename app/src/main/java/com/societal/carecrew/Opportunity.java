@@ -34,6 +34,7 @@ public class Opportunity implements Parcelable {
         description = in.readString();
         date = in.readString();
         location = in.readString();
+        category = in.readString();
         isUrgent = in.readByte() != 0;
     }
 
@@ -49,7 +50,6 @@ public class Opportunity implements Parcelable {
         }
     };
 
-    // Getters for title, description, date, and location
     public String getTitle() {
         return title;
     }
@@ -66,6 +66,22 @@ public class Opportunity implements Parcelable {
         return location;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public boolean isUrgent() {
+        return isUrgent;
+    }
+
+    public void setUrgent(boolean urgent) {
+        isUrgent = urgent;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -77,17 +93,7 @@ public class Opportunity implements Parcelable {
         dest.writeString(description);
         dest.writeString(date);
         dest.writeString(location);
+        dest.writeString(category);
         dest.writeByte((byte) (isUrgent ? 1 : 0));
-    }
-    public String getCategory() { // Add this getter method
-        return category;
-    }
-
-    public boolean isUrgent() {
-        return isUrgent;
-    }
-
-    public void setUrgent(boolean urgent) {
-        isUrgent = urgent;
     }
 }

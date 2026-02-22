@@ -8,18 +8,22 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class NotificationHelper {
 
     private static final String TAG = "NotificationHelper";
-    private static final String URGENT_CHANNEL_ID = "urgent_volunteer_channel";
+    public static final String URGENT_CHANNEL_ID = "urgent_volunteer_channel";
     private static final String URGENT_CHANNEL_NAME = "Urgent Volunteer Needs";
     private static final String GENERAL_CHANNEL_ID = "general_volunteer_channel";
     private static final String GENERAL_CHANNEL_NAME = "General Notifications";
+
+    private static final AtomicInteger NOTIFICATION_ID_COUNTER = new AtomicInteger(1000);
 
     /**
      * Create notification channels for Android O and above
@@ -68,12 +72,14 @@ public class NotificationHelper {
     /**
      * Internal method to send notifications
      */
-    private static void sendNotification(Context context, String title, String message, 
-                                        String channelId, boolean isUrgent) {
+    private static void sendNotification(Context context, String title, String message,
+                                         String channelId, boolean isUrgent) {
         Intent intent = new Intent(context, HomePageActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+
+        int notificationId = NOTIFICATION_ID_COUNTER.incrementAndGet();
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationId, intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
         int priority = isUrgent ? NotificationCompat.PRIORITY_HIGH : NotificationCompat.PRIORITY_DEFAULT;
@@ -88,10 +94,7 @@ public class NotificationHelper {
                         .setPriority(priority)
                         .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        int notificationId = (int) System.currentTimeMillis();
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         notificationManager.notify(notificationId, notificationBuilder.build());
     }
 
