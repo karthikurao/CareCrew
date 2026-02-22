@@ -8,6 +8,7 @@ public class Group {
     private String name;
     private String description;
     private String createdBy;
+    private String groupImageUrl;
     private Map<String, Object> members; // Add this field for members
 
     public Group() {} // Empty constructor for Firebase
@@ -51,6 +52,14 @@ public class Group {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public String getGroupImageUrl() {
+        return groupImageUrl;
+    }
+
+    public void setGroupImageUrl(String groupImageUrl) {
+        this.groupImageUrl = groupImageUrl;
     }
 
     public Map<String, Object> getMembers() {

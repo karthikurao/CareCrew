@@ -18,12 +18,20 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public OpportunityAdapter(List<Opportunity> opportunityList, OpportunityDetailsActivity opportunityDetailsActivity) {
         this.opportunityList = opportunityList;
         this.opportunityDetailsActivity = opportunityDetailsActivity;
+        this.useHorizontalLayout = false;
+    }
+
+    public OpportunityAdapter(List<Opportunity> opportunityList, OpportunityDetailsActivity opportunityDetailsActivity, boolean useHorizontalLayout) {
+        this.opportunityList = opportunityList;
+        this.opportunityDetailsActivity = opportunityDetailsActivity;
+        this.useHorizontalLayout = useHorizontalLayout;
     }
 
     @NonNull
     @Override
     public OpportunityViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_opportunity, parent, false);
+        int layoutId = useHorizontalLayout ? R.layout.item_opportunity_horizontal : R.layout.item_opportunity;
+        View view = LayoutInflater.from(parent.getContext()).inflate(layoutId, parent, false);
         return new OpportunityViewHolder(view);
     }
 

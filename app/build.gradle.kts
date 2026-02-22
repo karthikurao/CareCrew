@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.kotlin.android)
 }
 android {
     namespace = "com.societal.carecrew"
@@ -11,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.societal.carecrew"
         minSdk = 29
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -31,10 +32,17 @@ android {
     }
 }
 dependencies {
+    // Core AndroidX libraries
+    implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    
+    // Firebase libraries
+    implementation(platform(libs.firebase.bom))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
     implementation(libs.firebase.database)
     // Core AndroidX libraries
     implementation("androidx.core:core-ktx:1.9.0")

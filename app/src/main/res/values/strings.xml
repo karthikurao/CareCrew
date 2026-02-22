@@ -26,6 +26,7 @@
     <string name="home">Home</string>
     <string name="maps">Maps</string>
     <string name="groups">Groups</string>
+    <string name="chat">Chat</string>
     <string name="create_post">Post</string>
     <string name="selected_image">Selected Image</string>
     <string name="title_activity_map_view_fragment">MapViewFragment</string>
@@ -33,5 +34,6 @@
     <string name="opportunities">Opportunities</string>
     <string name="notifications_icon_description">Notifications</string>
     <string name="default_web_client_id">323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com</string>
+    <string name="app_motto">Let\'s Make the World Beautiful Again</string>
 
 </resources>
