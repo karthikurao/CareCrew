@@ -35,5 +35,9 @@
     <string name="notifications_icon_description">Notifications</string>
     <string name="default_web_client_id">323163308967-0a95skpaekhnt5b4jsgsjt44ho3i21e9.apps.googleusercontent.com</string>
     <string name="app_motto">Let\'s Make the World Beautiful Again</string>
+    <string name="see_all">See All</string>
+    <string name="group_name_hint">Group Name</string>
+    <string name="group_description_hint">Group Description</string>
+    <string name="create_group">Create Group</string>
 
 </resources>

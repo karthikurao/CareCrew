@@ -1,12 +1,15 @@
 package com.societal.carecrew;
 
+import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -75,7 +78,12 @@ public class FCMService extends FirebaseMessagingService {
                         .setContentIntent(pendingIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(notificationId, notificationBuilder.build());
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                == PackageManager.PERMISSION_GRANTED) {
+            notificationManager.notify(notificationId, notificationBuilder.build());
+        } else {
+            Log.w(TAG, "POST_NOTIFICATIONS permission not granted, notification suppressed");
+        }
     }
 
     private void sendRegistrationToServer(String token) {

@@ -14,6 +14,7 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
 
     private final List<Opportunity> opportunityList;
     private final OpportunityDetailsActivity opportunityDetailsActivity;
+    private final boolean useHorizontalLayout;
 
     public OpportunityAdapter(List<Opportunity> opportunityList, OpportunityDetailsActivity opportunityDetailsActivity) {
         this.opportunityList = opportunityList;
