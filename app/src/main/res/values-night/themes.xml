@@ -1,7 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.CareCrew" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">#7C6FF7</item>
+        <item name="colorPrimaryVariant">#5B4FCF</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/secondary</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:colorBackground">#121212</item>
+        <item name="colorSurface">#1E1E2E</item>
+        <item name="colorError">@color/error</item>
+        <item name="android:statusBarColor">#1E1E2E</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
+
+    <style name="Theme.CareCrew" parent="Base.Theme.CareCrew" />
 </resources>

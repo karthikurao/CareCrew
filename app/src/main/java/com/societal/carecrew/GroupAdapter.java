@@ -49,7 +49,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 long memberCount = snapshot.getChildrenCount();
-                holder.groupMembersCountTextView.setText(String.valueOf(memberCount));
+                holder.groupMembersCountTextView.setText(memberCount + " members");
             }
 
             @Override
