@@ -19,7 +19,7 @@ The app simplifies the process of signing up, finding local volunteer opportunit
 - 💬 **In-App Chat**: Communication between volunteers.
 - 🏆 **Leaderboards**: Recognizing top contributors.
 - 👥 **Volunteer Groups**: Create and manage local volunteer teams.
-- 📲 **Notifications**: (Coming Soon) Alerts for urgent help opportunities.
+- 📲 **Push Notifications**: Alerts for urgent volunteer needs using Firebase Cloud Messaging.
 
 ---
 
@@ -67,35 +67,23 @@ git clone https://github.com/yourusername/care-crew.git
 
 ---
 
-## ⚙️ CI/CD Workflows
+## 📲 Push Notifications
 
-This project uses GitHub Actions for automated build, test, and deployment:
+Care Crew includes Firebase Cloud Messaging (FCM) integration for real-time alerts about urgent volunteer needs.
 
-### 🔄 Android CI (gradle.yml)
-- **Triggers**: Push and Pull Requests to `main` branch
-- **Jobs**:
-  - **Build and Test**: Runs lint checks, builds debug APK, and executes unit tests
-  - **Dependency Submission**: Generates and submits dependency graph for Dependabot
+**Key Features:**
+- Automatic subscription to urgent notifications on login
+- Topic-based messaging for scalable broadcasting
+- Support for high-priority urgent notifications
+- Notification channels for Android 8.0+
 
-### ✅ Pull Request Checks (pr-checks.yml)
-- **Triggers**: Pull Requests to `main` branch
-- **Jobs**:
-  - **Lint Check**: Runs Android Lint and uploads results
-  - **Unit Tests**: Executes unit tests and uploads test reports
-  - **Build APK**: Builds debug APK and uploads as artifact
-
-### 🚀 Android Release Build (gradle-publish.yml)
-- **Triggers**: Release creation
-- **Jobs**:
-  - **Build Release APK**: Builds release APK and uploads to GitHub Release
-
-All workflows automatically cache Gradle dependencies for faster builds.
+For detailed setup and usage instructions, see [Push Notifications Guide](docs/PUSH_NOTIFICATIONS.md).
 
 ---
 
+
 ## 🛃️ Future Plans
 
-- 🔔 Push Notifications for emergency events.
 - 🌑 Dark Mode for better night usability.
 - 📸 Profile picture uploads.
 - 🫩 Event creation features.

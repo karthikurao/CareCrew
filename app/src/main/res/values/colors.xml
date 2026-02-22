@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
+    <!-- Brand colors -->
+    <color name="primary">#5B4FCF</color>
+    <color name="primary_variant">#3D3099</color>
+    <color name="secondary">#03DAC6</color>
+    <color name="secondary_variant">#018786</color>
+    <color name="accent">#FF6B6B</color>
+
+    <!-- Legacy alias kept for compatibility -->
+    <color name="blue">#5B4FCF</color>
+
+    <!-- Surface / background -->
+    <color name="background">#F8F9FE</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F0EDFF</color>
+
+    <!-- Text -->
+    <color name="on_primary">#FFFFFF</color>
+    <color name="on_secondary">#000000</color>
+    <color name="on_background">#1A1A2E</color>
+    <color name="text_secondary">#6B7280</color>
+
+    <!-- Status colors -->
+    <color name="success">#4CAF50</color>
+    <color name="warning">#FF9800</color>
+    <color name="error">#F44336</color>
+    <color name="urgent">#FF6B6B</color>
+
+    <!-- Utility -->
     <color name="white">#FFFFFFFF</color>
-    <color name="blue">#6356e5</color>
+    <color name="black">#FF000000</color>
     <color name="lavender">#E6E6FA</color>
     <color name="grey">#808080</color>
-    <color name="light_grey">#D3D3D3</color>
+    <color name="light_grey">#E8E8F0</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="text_white_70">#B3FFFFFF</color>
+
+    <!-- Gradient start/end for auth screens -->
+    <color name="gradient_start">#5B4FCF</color>
+    <color name="gradient_end">#7C6FF7</color>
+
+    <!-- Bottom nav -->
+    <color name="nav_selected">#5B4FCF</color>
+    <color name="nav_unselected">#9E9E9E</color>
 </resources>

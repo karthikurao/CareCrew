@@ -119,6 +119,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
+            // Subscribe to urgent notifications
+            NotificationHelper.subscribeToUrgentNotifications();
+            
             Toast.makeText(LoginActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
             finish();

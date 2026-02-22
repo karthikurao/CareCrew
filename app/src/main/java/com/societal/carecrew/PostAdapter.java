@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,7 +70,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     long numLikes = snapshot.getChildrenCount();
-                    holder.numLikesTextView.setText(String.valueOf(numLikes) + " likes");
+                    holder.numLikesTextView.setText(String.valueOf(numLikes));
                 }
 
                 @Override
@@ -82,7 +83,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     long numComments = snapshot.getChildrenCount();
-                    holder.numCommentsTextView.setText(String.valueOf(numComments) + " comments");
+                    holder.numCommentsTextView.setText(String.valueOf(numComments));
                 }
 
                 @Override
@@ -102,14 +103,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                 // User has already liked the post, so unlike it
                                 userLikesRef.removeValue();
                                 holder.likeButton.setImageResource(R.drawable.ic_like_unfilled);
-                                int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().split(" ")[0]);
-                                holder.numLikesTextView.setText(String.valueOf(currentLikes - 1) + " likes");
+                                int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().trim());
+                                holder.numLikesTextView.setText(String.valueOf(currentLikes - 1));
                             } else {
                                 // User hasn't liked the post, so like it
                                 userLikesRef.setValue(true);
                                 holder.likeButton.setImageResource(R.drawable.ic_like_filled);
-                                int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().split(" ")[0]);
-                                holder.numLikesTextView.setText(String.valueOf(currentLikes + 1) + " likes");
+                                int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().trim());
+                                holder.numLikesTextView.setText(String.valueOf(currentLikes + 1));
                             }
                         }
 
@@ -153,6 +154,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.captionTextView.setText(post.getCaption());
             Glide.with(holder.itemView.getContext()).load(post.getImageUrl()).into(holder.postImageView);
 
+            // Set post time placeholder (show "Just now" until Post model gains a timestamp field)
+            if (holder.postTimeTextView != null) {
+                holder.postTimeTextView.setText("Just now");
+            }
+
+            // Share button: share caption text via Android share sheet
+            if (holder.shareButton != null) {
+                holder.shareButton.setOnClickListener(v -> {
+                    android.content.Intent shareIntent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, post.getCaption());
+                    holder.itemView.getContext().startActivity(
+                            android.content.Intent.createChooser(shareIntent, "Share post"));
+                });
+            }
             // Double-tap to like (only on the postImageView)
             GestureDetector gestureDetector = new GestureDetector(holder.itemView.getContext(), new GestureDetector.SimpleOnGestureListener() {
                 @Override
@@ -168,14 +184,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                                     // User has already liked the post, so unlike it
                                     userLikesRef.removeValue();
                                     holder.likeButton.setImageResource(R.drawable.ic_like_unfilled);
-                                    int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().split(" ")[0]);
-                                    holder.numLikesTextView.setText(String.valueOf(currentLikes - 1) + " likes");
+                                    int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().trim());
+                                    holder.numLikesTextView.setText(String.valueOf(currentLikes - 1));
                                 } else {
                                     // User hasn't liked the post, so like it
                                     userLikesRef.setValue(true);
                                     holder.likeButton.setImageResource(R.drawable.ic_like_filled);
-                                    int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().split(" ")[0]);
-                                    holder.numLikesTextView.setText(String.valueOf(currentLikes + 1) + " likes");
+                                    int currentLikes = Integer.parseInt(holder.numLikesTextView.getText().toString().trim());
+                                    holder.numLikesTextView.setText(String.valueOf(currentLikes + 1));
                                 }
                             }
 
@@ -243,10 +259,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView profileImageView;
         TextView usernameTextView;
+        TextView postTimeTextView;
         ImageView postImageView;
         TextView captionTextView;
         ImageView likeButton;
         ImageView commentButton;
+        LinearLayout shareButton;
         TextView numLikesTextView;
         TextView numCommentsTextView;
         LottieAnimationView likeAnimationView;
@@ -256,10 +274,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             super(itemView);
             profileImageView = itemView.findViewById(R.id.profileImageView);
             usernameTextView = itemView.findViewById(R.id.usernameTextView);
+            postTimeTextView = itemView.findViewById(R.id.postTimeTextView);
             postImageView = itemView.findViewById(R.id.postImageView);
             captionTextView = itemView.findViewById(R.id.captionTextView);
             likeButton = itemView.findViewById(R.id.likeButton);
             commentButton = itemView.findViewById(R.id.commentButton);
+            shareButton = itemView.findViewById(R.id.shareButton);
             numLikesTextView = itemView.findViewById(R.id.numLikesTextView);
             numCommentsTextView = itemView.findViewById(R.id.numCommentsTextView);
             likeAnimationView = itemView.findViewById(R.id.likeAnimationView);

@@ -4,15 +4,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.OpportunityViewHolder> {
 
-    private List<Opportunity> opportunityList;
-    private OpportunityDetailsActivity opportunityDetailsActivity;
-    private boolean useHorizontalLayout;
+    private final List<Opportunity> opportunityList;
+    private final OpportunityDetailsActivity opportunityDetailsActivity;
 
     public OpportunityAdapter(List<Opportunity> opportunityList, OpportunityDetailsActivity opportunityDetailsActivity) {
         this.opportunityList = opportunityList;
@@ -37,11 +38,25 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     @Override
     public void onBindViewHolder(@NonNull OpportunityViewHolder holder, int position) {
         Opportunity opportunity = opportunityList.get(position);
-        holder.titleTextView.setText(opportunity.getTitle()); // Assuming Opportunity has a getTitle() method
-        holder.categoryTextView.setText(opportunity.getCategory()); // Assuming Opportunity has a getCategory() method
+        holder.titleTextView.setText(opportunity.getTitle());
+        holder.categoryTextView.setText(opportunity.getCategory());
 
-        // You can add an OnClickListener here to handle clicks on opportunity items
-        // and call the showOpportunityDetails() method in the activity
+        // Show location if available
+        if (holder.locationTextView != null) {
+            String location = opportunity.getLocation();
+            if (location != null && !location.isEmpty()) {
+                holder.locationTextView.setText(location);
+                holder.locationTextView.setVisibility(View.VISIBLE);
+                if (holder.locationRow != null) holder.locationRow.setVisibility(View.VISIBLE);
+            } else {
+                if (holder.locationRow != null) holder.locationRow.setVisibility(View.GONE);
+            }
+        }
+
+        // Show urgent badge if applicable
+        if (holder.urgentBadge != null) {
+            holder.urgentBadge.setVisibility(opportunity.isUrgent() ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
@@ -52,11 +67,17 @@ public class OpportunityAdapter extends RecyclerView.Adapter<OpportunityAdapter.
     public static class OpportunityViewHolder extends RecyclerView.ViewHolder {
         TextView titleTextView;
         TextView categoryTextView;
+        TextView locationTextView;
+        View locationRow;
+        TextView urgentBadge;
 
         public OpportunityViewHolder(View itemView) {
             super(itemView);
             titleTextView = itemView.findViewById(R.id.opportunityTitleTextView);
             categoryTextView = itemView.findViewById(R.id.opportunityCategoryTextView);
+            locationTextView = itemView.findViewById(R.id.opportunityLocationTextView);
+            locationRow = itemView.findViewById(R.id.locationRow);
+            urgentBadge = itemView.findViewById(R.id.urgentBadge);
         }
     }
 }
