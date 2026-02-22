@@ -101,6 +101,8 @@ public class NotificationHelper {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED) {
             notificationManager.notify(notificationId, notificationBuilder.build());
+        } else {
+            Log.w(TAG, "POST_NOTIFICATIONS permission not granted, notification suppressed");
         }
     }
 

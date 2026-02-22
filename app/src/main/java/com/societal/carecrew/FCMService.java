@@ -81,6 +81,8 @@ public class FCMService extends FirebaseMessagingService {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 == PackageManager.PERMISSION_GRANTED) {
             notificationManager.notify(notificationId, notificationBuilder.build());
+        } else {
+            Log.w(TAG, "POST_NOTIFICATIONS permission not granted, notification suppressed");
         }
     }
 
