@@ -74,7 +74,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_opportunities"
                 android:contentDescription="Opportunities icon"
-                android:tint="@color/blue"
+                app:tint="@color/blue"
                 android:layout_marginEnd="16dp" />
 
             <TextView
@@ -98,7 +98,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_group"
                 android:contentDescription="Groups icon"
-                android:tint="@color/blue"
+                app:tint="@color/blue"
                 android:layout_marginEnd="16dp" />
 
             <TextView
@@ -122,7 +122,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_map"
                 android:contentDescription="Map icon"
-                android:tint="@color/blue"
+                app:tint="@color/blue"
                 android:layout_marginEnd="16dp" />
 
             <TextView
@@ -145,7 +145,7 @@
                 android:layout_height="24dp"
                 android:src="@drawable/ic_people"
                 android:contentDescription="Community icon"
-                android:tint="@color/blue"
+                app:tint="@color/blue"
                 android:layout_marginEnd="16dp" />
 
             <TextView
