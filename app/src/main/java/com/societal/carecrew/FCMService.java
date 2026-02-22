@@ -80,15 +80,9 @@ public class FCMService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        // Create notification channel for Android O and above
+        // Ensure notification channels are created/configured for Android O and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID,
-                    CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            channel.setDescription("Notifications for urgent volunteer opportunities");
-            notificationManager.createNotificationChannel(channel);
+            NotificationHelper.createNotificationChannels(this);
         }
 
         notificationManager.notify(0, notificationBuilder.build());
